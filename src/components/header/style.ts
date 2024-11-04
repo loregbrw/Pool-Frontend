@@ -19,14 +19,17 @@ export const StyledHeader = styled("header")`
     z-index: 800;
     border-bottom: 3px solid ${EColorPalette.JET};
 `
+
 export const StyledBox = styled("div")`
     display: flex;
     align-items: center;
-    justify-content: space-between;
 
     width: 170px;
     height: 100%;
+
+    gap: 25px;
 `
+
 export const StyledLink = styled(Link)`
 
     font-size: 14px;
@@ -57,16 +60,4 @@ export const StyledLink = styled(Link)`
 
 export const StyledLogo = styled("img")`
     height: 25px;
-`
-
-export const StyledProfile = styled("img")`
-    height: 30px;
-    border-radius: 100%;
-
-    cursor: pointer;
-    transition: 300ms;
-
-    &:hover {
-        filter: brightness(75%) saturate(125%);
-    }
 `

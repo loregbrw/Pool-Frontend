@@ -6,11 +6,14 @@ import {
 } from "react-router-dom";
 import "./index.css";
 
-import { App } from './App.tsx';
+import Home from "./pages/home/index.tsx";
+import Login from './pages/login/index.tsx';
+import SignUp from "./pages/sign-up/index.tsx";
+import Landing from "./pages/landing/index.tsx";
 
+import { App } from './App.tsx';
 import { Toaster } from 'react-hot-toast';
 import { ThemeProvider } from './contexts/theme.tsx';
-import Login from './pages/login/index.tsx';
 
 // import { Initial } from './pages/initial/index.tsx';
 // import { Login } from './pages/login/index.tsx';
@@ -23,25 +26,25 @@ import Login from './pages/login/index.tsx';
 // import { Toaster } from 'react-hot-toast';
 
 const router = createBrowserRouter([
-  // {
-  //   path: "/",
-  //   element: <Initial />
-  // },
+  {
+    path: "/",
+    element: <Landing />
+  },
   {
     path: "/login",
     element: <Login />
   },
-  // {
-  //   path: "/signup",
-  //   element: <SignUp />
-  // },
-  // {
-  //   path: "/home",
-  //   element:
-  //     <App>
-  //       <Home />
-  //     </App> 
-  // },
+  {
+    path: "/signup",
+    element: <SignUp />
+  },
+  {
+    path: "/home",
+    element:
+      <App>
+        <Home />
+      </App> 
+  },
   // {
   //   path: "/project/:id",
   //   element:

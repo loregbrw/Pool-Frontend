@@ -3,8 +3,7 @@ import BackImg from "/Back.png";
 import { IFormProps } from ".."
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { StyledBack, StyledButton, StyledContainer, StyledDate, StyledDiv, StyledField, StyledForm, StyledHeader, StyledInput, StyledObs, StyledTitle } from "./style"
-import EColorPalette from "../../../enums/EColorPalette";
+import { StyledBack, StyledButton, StyledContainer, StyledDiv, StyledForm, StyledHeader, StyledTitle } from "./style"
 
 const InputForm = ({ title, inputs, button, actionBack: back }: IFormProps) => {
     return (
@@ -17,42 +16,8 @@ const InputForm = ({ title, inputs, button, actionBack: back }: IFormProps) => {
                     <StyledDiv>
                         {
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                {inputs.map((input, index) => (
-                                    <StyledField key={index}>
-                                        {input.type === 'date' ? (
-                                            <StyledDate
-                                                label={input.label}
-                                                onChange={(e) => input.onChange(e)}
-                                                slotProps={{
-                                                    textField: {
-                                                        required: true,
-                                                    },
-                                                }}
-                                            />
-                                        ) : (
-                                            <StyledInput
-                                                type={input.type}
-                                                label={input.label}
-                                                onChange={(e) => input.onChange(e.target.value)}
-                                                inputProps={{ maxLength: 255 }}
-                                                required
-                                            />
-                                        )}
-
-                                        {input.obs && (
-                                            <StyledObs
-                                                fontSize={"14px"}
-                                                fontWeight={700}
-                                                color={EColorPalette.JET}
-                                                onClick={input.obs.action}
-                                            >
-                                                {input.obs.obs}
-                                            </StyledObs>
-                                        )}
-                                    </StyledField>
-                                ))}
+                                { inputs }
                             </LocalizationProvider>
-
                         }
 
                     </StyledDiv>

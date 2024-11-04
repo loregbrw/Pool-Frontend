@@ -1,17 +1,19 @@
-import React, { useState } from "react"
 import toast from "react-hot-toast";
+import React, { useState } from "react"
+import PasswordInput from "../../components/input/password-input";
 
 import { api } from "../../services/api";
 import { useNavigate } from "react-router-dom";
-import Form, { IButton, IInput } from "../../components/form";
+import Form, { IButton } from "../../components/form";
+import { StyledInput } from "../../components/form/input-form/style";
 
 const Login = () => {
-    
+
     const [login, setLogin] = useState("");
     const [password, setPassword] = useState("");
 
     const navigate = useNavigate();
-    
+
     const doLogin = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -25,7 +27,7 @@ const Login = () => {
 
             navigate("/home");
             toast.success("User logged successfully!");
-            
+
         } catch (error: any) {
 
             console.log(error);
@@ -38,20 +40,31 @@ const Login = () => {
             toast.error(error.message);
         }
     }
-    
-    
-    const inputs: IInput[] = [
-        { label: "Email or username", type: "text", onChange: (l) => setLogin(l) },
-        { label: "Password", type: "password", obs: {obs: "Esqueceu a senha?", action: () => {}}, onChange: (p) => setPassword(p) }
-    ]
-    
+
     const button: IButton = {
-        title: "Submit",
+        title: "Sign in",
         action: doLogin
     }
+
+    const LoginForm = () => {
+        return (
+            <>
+
+                <StyledInput
+                    type="text"
+                    label="Email or username"
+                    onChange={(e) => setLogin(e.target.value)}
+                    inputProps={{ maxLength: 255 }}
+                    required
+                />
+                <PasswordInput onChange={(e) => setPassword(e.target.value)} obs="Forgot password?" />
+            </>
+        )
+    }
+
     return (
         <>
-            <Form actionBack={() => navigate("/")} title={"Login"} inputs={inputs} button={button} />
+            <Form actionBack={() => navigate("/")} title={"Welcome back"} inputs={LoginForm()} button={button} />
         </>
     )
 }

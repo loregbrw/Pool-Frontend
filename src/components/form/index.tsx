@@ -5,21 +5,14 @@ import InputForm from "./input-form";
 
 export interface IFormProps {
     title: string;
-    inputs: IInput[];
+    inputs: React.ReactNode;
     button: IButton;
     actionBack: () => void;
 }
 
-export interface IInput {
-    label: string;
-    type: string;
-    obs?: IObs;
-    onChange: (e: any) => void;
-}
-
 export interface IButton {
     title: string;
-    action: (e: React.FormEvent) => void;
+    action: (e: any) => void;
 }
 
 export interface IObs {

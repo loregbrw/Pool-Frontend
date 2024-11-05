@@ -1,14 +1,14 @@
 import Header from "./components/header";
 import React, { useEffect, useState } from "react"
+import ProfileModal from "./components/modal/profile";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 
 import { api } from "./services/api";
-import { StyledProfile, StyledProfileImg } from "./style"
 import { IconButton } from "@mui/material"
 import { useNavigate } from "react-router-dom";
 import { StyledLink } from "./components/header/style"
+import { StyledProfile, StyledProfileImg } from "./style"
 import { StyledModalBackground } from "./components/modal/style";
-import ProfileModal from "./components/modal/profile";
 
 interface IUser {
   birthdate: Date;

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import EColorPalette from "../../../enums/EColorPalette";
+
 import { getContrastYIQ } from "../../style";
 
 export const StyledDiv = styled.div`

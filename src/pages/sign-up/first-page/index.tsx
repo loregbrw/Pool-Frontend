@@ -1,14 +1,15 @@
+import toast from "react-hot-toast";
+
+import dayjs, { Dayjs } from "dayjs";
+import { StyledSpan } from "../style";
 import React, { useState } from "react";
 import { api } from "../../../services/api";
 import { useNavigate } from "react-router-dom";
 import Form, { IButton } from "../../../components/form";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { StyledDate, StyledInput } from "../../../components/form/input-form/style";
-import dayjs, { Dayjs } from "dayjs";
 import { StyledContainer } from "../../../components/input/password-input/style";
-import { StyledSpan } from "../style";
-import toast from "react-hot-toast";
+import { StyledDate, StyledInput } from "../../../components/form/input-form/style";
 
 interface IFirstPageProps {
     setInit: (e: boolean) => void;

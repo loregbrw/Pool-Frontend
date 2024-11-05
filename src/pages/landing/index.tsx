@@ -1,9 +1,8 @@
 import Header from "../../components/header";
-import ImgInitial from "/NotAllEroesWearCapes.png"
 
-import { StyledLink } from "../../components/header/style";
-import { StyledMain } from "../../components/style";
 import { StyledFooter } from "./style";
+import { StyledMain } from "../../components/style";
+import { StyledLink } from "../../components/header/style";
 
 const Landing = () => {
     return(

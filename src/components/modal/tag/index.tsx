@@ -4,9 +4,9 @@ import EColorPalette from "../../../enums/EColorPalette";
 
 import React, { useState } from "react";
 import { StyledButton } from "../../style";
+import { IconButton } from "@mui/material";
 import { api } from "../../../services/api";
 import { StyledContainer, StyledInput, StyledLabel, StyledModal, StyledTitle } from "../style"
-import { IconButton } from "@mui/material";
 
 interface ITagModalProps {
     closeAction: () => void;

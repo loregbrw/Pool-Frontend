@@ -1,6 +1,7 @@
+import chroma from "chroma-js"
 import styled from "styled-components"
 import EColorPalette from "../../../../enums/EColorPalette"
-import chroma from "chroma-js"
+
 import { getContrastYIQ } from "../../../../components/style"
 
 export const StyledHeader = styled.header`
@@ -29,7 +30,7 @@ export const StyledContainer = styled.div<{max: string}>`
     justify-content: flex-end;
 `
 
-export const StyledSelect = styled("select")<{color? : string, bgcolor: string}>`
+export const StyledSelect = styled.select<{color? : string, bgcolor: string}>`
 
     cursor: pointer;
     transition: 300ms;
@@ -56,13 +57,13 @@ export const StyledSelect = styled("select")<{color? : string, bgcolor: string}>
     }
 `
 
-export const StyledOption = styled("option") <{ bgcolor: string }>`
+export const StyledOption = styled.option <{ bgcolor: string }>`
     font-size: 12px;
     background-color: ${(props) => props.bgcolor};
     color: ${(props) => getContrastYIQ(props.bgcolor)};
 `
 
-export const StyledSearch = styled("input")`
+export const StyledSearch = styled.input`
 
     height: 100%;
     width: 100%;

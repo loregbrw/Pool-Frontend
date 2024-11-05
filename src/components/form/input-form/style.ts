@@ -3,9 +3,9 @@ import styled from "styled-components";
 import EColorPalette from "../../../enums/EColorPalette";
 
 import { DatePicker } from "@mui/x-date-pickers";
-import { Button, Link, TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 
-export const StyledHeader = styled("header")`
+export const StyledHeader = styled.header`
 
     display: none;
 
@@ -24,7 +24,7 @@ export const StyledHeader = styled("header")`
     }
 `
 
-export const StyledBack = styled("img")`
+export const StyledBack = styled.img`
     position: fixed;
     left: 15px;
     top: 15px;
@@ -46,7 +46,7 @@ export const StyledBack = styled("img")`
     }
 `
 
-export const StyledContainer = styled("div")`
+export const StyledContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
@@ -62,7 +62,7 @@ export const StyledContainer = styled("div")`
     }
 `
 
-export const StyledForm = styled("form")`
+export const StyledForm = styled.form`
     display: flex;
     align-items: center;
     justify-content: center;
@@ -74,14 +74,14 @@ export const StyledForm = styled("form")`
     max-width: 400px;
 `
 
-export const StyledTitle = styled("span")`
+export const StyledTitle = styled.span`
     font-size: 40px;
     font-weight: 700;
 
     cursor: default;
 `
 
-export const StyledDiv = styled("div")`
+export const StyledDiv = styled.div`
     display: flex;
     flex-direction: column;
     
@@ -89,7 +89,7 @@ export const StyledDiv = styled("div")`
     width: 100%;
 `
 
-export const StyledField = styled("div")`
+export const StyledField = styled.div`
     display: flex;
     flex-direction: column;
 

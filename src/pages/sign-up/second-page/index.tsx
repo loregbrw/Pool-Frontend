@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import PasswordInput from "../../../components/input/password-input";
-import Form, { IButton } from "../../../components/form";
-import EColorPalette from "../../../enums/EColorPalette";
 import toast from "react-hot-toast";
-import { api } from "../../../services/api";
+import EColorPalette from "../../../enums/EColorPalette";
+import PasswordInput from "../../../components/input/password-input";
+
 import { Dayjs } from "dayjs";
+import { api } from "../../../services/api";
+import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import Form, { IButton } from "../../../components/form";
 import { StyledBar, StyledProgress, StyledSpan, StyledText } from "../style";
 
 interface ISecondPageProps {

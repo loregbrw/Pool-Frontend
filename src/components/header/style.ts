@@ -3,7 +3,7 @@ import EColorPalette from "../../enums/EColorPalette";
 
 import { Link } from "react-router-dom";
 
-export const StyledHeader = styled("header")`
+export const StyledHeader = styled.header`
     position: fixed;
 
     width: 100%;
@@ -20,7 +20,7 @@ export const StyledHeader = styled("header")`
     border-bottom: 3px solid ${EColorPalette.JET};
 `
 
-export const StyledBox = styled("div")`
+export const StyledBox = styled.div`
     display: flex;
     align-items: center;
 
@@ -58,6 +58,6 @@ export const StyledLink = styled(Link)`
     }
 `
 
-export const StyledLogo = styled("img")`
+export const StyledLogo = styled.img`
     height: 25px;
 `

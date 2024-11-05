@@ -1,16 +1,16 @@
+import toast from "react-hot-toast";
 import SearchImg from "/Search.png"
 import TuneIcon from '@mui/icons-material/Tune';
+import TagModal from "../../../../components/modal/tag";
 import EColorPalette from "../../../../enums/EColorPalette";
+import CreateProjectModal from "../../../../components/modal/create-project";
 
 import { IconButton } from "@mui/material";
-import { StyledContainer, StyledDiv, StyledHeader, StyledImg, StyledOption, StyledSearch, StyledSelect } from "./style";
-import { StyledButton } from "../../../../components/style";
 import { useEffect, useState } from "react";
-import { StyledModalBackground } from "../../../../components/modal/style";
-import TagModal from "../../../../components/modal/tag";
 import { api } from "../../../../services/api";
-import toast from "react-hot-toast";
-import CreateProjectModal from "../../../../components/modal/create-project";
+import { StyledButton } from "../../../../components/style";
+import { StyledModalBackground } from "../../../../components/modal/style";
+import { StyledContainer, StyledDiv, StyledHeader, StyledImg, StyledOption, StyledSearch, StyledSelect } from "./style";
 
 export interface ITag {
     id: string;
@@ -18,7 +18,12 @@ export interface ITag {
     color: string;
 }
 
-const HeaderHome = () => {
+interface IHeaderHomeProps {
+    search: string;
+    setSearch: (e: any) => void;
+}
+
+const HeaderHome = ({ search, setSearch }: IHeaderHomeProps) => {
 
     const [tagModal, setTagModal] = useState(false);
     const [projectModal, setProjectModal] = useState(false);
@@ -76,7 +81,7 @@ const HeaderHome = () => {
                         onChange={handleChange}
                         value={selectedTag?.id || ""}
                     >
-                        <StyledOption bgcolor={selectedTag?.color || EColorPalette.COOLGRAY} value="">Filter</StyledOption>
+                        <StyledOption bgcolor={EColorPalette.COOLGRAY} value="">Filter</StyledOption>
                         {
                             tags.map((tag, index) => (
                                 <StyledOption key={index} value={tag.id} bgcolor={tag.color}>
@@ -85,7 +90,7 @@ const HeaderHome = () => {
                             ))
                         }
                     </StyledSelect>
-                    <StyledSearch placeholder="Search a project" />
+                    <StyledSearch value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search a project" maxLength={50} />
                     <StyledImg src={SearchImg} />
                 </StyledContainer>
             </StyledHeader >

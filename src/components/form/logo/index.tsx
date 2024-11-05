@@ -1,5 +1,6 @@
-import { StyledImg, StyledLogo, StyledSlogan } from './style';
 import PoolLogoImg from '/PoolLogoJet.png';
+
+import { StyledImg, StyledLogo, StyledSlogan } from './style';
 
 const Logo = () => {
     return (

@@ -1,7 +1,8 @@
 import React from "react";
-import { StyledContainer } from "./style";
 import Logo from "./logo";
 import InputForm from "./input-form";
+
+import { StyledContainer } from "./style";
 
 export interface IFormProps {
     title: string;

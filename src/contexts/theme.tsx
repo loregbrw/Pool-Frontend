@@ -1,5 +1,6 @@
-import React, { useState } from "react";
 import EColorPalette from "../enums/EColorPalette";
+
+import React, { useState } from "react";
 
 interface IColors {
     color: string;

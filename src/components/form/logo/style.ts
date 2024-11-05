@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const StyledImg = styled("div")`
+export const StyledImg = styled.div`
     display: flex;
 
     min-height: 100%;
@@ -21,10 +21,10 @@ export const StyledImg = styled("div")`
         display: none;
     }
 `
-export const StyledLogo = styled("img")`
+export const StyledLogo = styled.img`
     width: min(75%, 550px);
 `
-export const StyledSlogan = styled("span")`
+export const StyledSlogan = styled.span`
     font-size: 25px;
     font-weight: 700;
     text-align: center;

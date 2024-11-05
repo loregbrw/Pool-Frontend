@@ -1,5 +1,5 @@
-import { StyledHr, StyledModal } from "../style";
 import { StyledLink } from "./style";
+import { StyledHr, StyledModal } from "../style";
 
 const ProfileModal = () => {
     return (

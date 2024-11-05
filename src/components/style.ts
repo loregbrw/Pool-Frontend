@@ -1,6 +1,7 @@
+import chroma from "chroma-js";
 import styled from "styled-components";
 import EColorPalette from "../enums/EColorPalette";
-import chroma from "chroma-js";
+
 import { Button } from "@mui/material";
 
 export const getContrastYIQ = (bgcolor: string) => {
@@ -26,7 +27,9 @@ export const StyledMain = styled.main`
 
     align-items: center;
 
-    padding: 70px max(5%, 35px) max(5%, 35px) max(5%, 35px);
+    gap: 25px;
+
+    padding: 70px max(5%, 25px) max(5%, 25px) max(5%, 25px);
 `
 
 export const StyledButton = styled(Button)<{ bgcolor: string }>`

@@ -1,6 +1,7 @@
+import chroma from "chroma-js";
 import styled from "styled-components";
 import EColorPalette from "../../../enums/EColorPalette";
-import chroma from "chroma-js";
+
 import { Link } from "react-router-dom";
 
 export const StyledContainer = styled.div`

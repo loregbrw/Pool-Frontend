@@ -27,7 +27,7 @@ export const StyledMain = styled.main`
 
     align-items: center;
 
-    gap: 25px;
+    gap: 35px;
 
     padding: 70px max(5%, 25px) max(5%, 25px) max(5%, 25px);
 `

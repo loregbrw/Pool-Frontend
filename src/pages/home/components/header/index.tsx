@@ -20,16 +20,19 @@ export interface ITag {
 
 interface IHeaderHomeProps {
     search: string;
-    setSearch: (e: any) => void;
+    setSearch: (e: string) => void;
+
+    selectedTag: ITag | null;
+    setSelectedTag: (e: ITag | null) => void;
+
+    projectModal: boolean;
+    setProjectModal: (e: boolean) => void;
 }
 
-const HeaderHome = ({ search, setSearch }: IHeaderHomeProps) => {
-
-    const [tagModal, setTagModal] = useState(false);
-    const [projectModal, setProjectModal] = useState(false);
+const HeaderHome = ({ search, setSearch, selectedTag, setSelectedTag, projectModal, setProjectModal }: IHeaderHomeProps) => {
 
     const [tags, setTags] = useState<ITag[]>([]);
-    const [selectedTag, setSelectedTag] = useState<ITag | null>(null);
+    const [tagModal, setTagModal] = useState(false);
 
     const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedTagId = event.target.value;

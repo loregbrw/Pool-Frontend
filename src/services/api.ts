@@ -1,6 +1,6 @@
 import axios from "axios"
 
 export const api = axios.create({
-    baseURL: "http://localhost:2525",
+    baseURL: "https://pool-backend-o7iw.onrender.com",
     timeout: 8000
 })

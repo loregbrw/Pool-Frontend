@@ -80,7 +80,7 @@ export const StyledTagName = styled.span<{color: string}>`
     padding: 3px 5px;
 
     font-size: 10px;
-    font-weight: 600;
+    font-weight: 500;
 `
 
 export const StyledName = styled.span`

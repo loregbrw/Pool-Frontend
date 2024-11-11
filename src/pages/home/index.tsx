@@ -15,7 +15,7 @@ const Home = () => {
         <>
             <StyledMain>
                 <HeaderHome search={search} setSearch={setSearch} selectedTag={selectedTag} setSelectedTag={setSelectedTag} projectModal={projectModal} setProjectModal={setProjectModal} />
-                <Cards search={search} reload={projectModal} />
+                <Cards search={search} reload={projectModal} tagId={selectedTag?.id} />
             </StyledMain>
         </>
     )

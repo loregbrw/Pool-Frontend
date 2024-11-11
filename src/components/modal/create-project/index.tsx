@@ -8,7 +8,7 @@ import { StyledButton } from "../../style";
 import { api } from "../../../services/api";
 import { ITag } from "../../../pages/home/components/header";
 import { StyledDiv, StyledOption, StyledSelect, StyledTextArea } from "./style";
-import { StyledContainer, StyledHr, StyledInput, StyledLabel, StyledModal, StyledTitle } from "../style";
+import { StyledContainer, StyledForm, StyledHr, StyledInput, StyledLabel, StyledModal, StyledTitle } from "../style";
 
 interface ICreateProjectModalProps {
     closeAction: () => void;
@@ -94,8 +94,7 @@ const CreateProjectModal = ({ closeAction }: ICreateProjectModalProps) => {
             return;
         }
 
-        try {
-
+        const apiRequest = async () => {
             await api.post("/projects",
                 {
                     name: projectName,
@@ -109,21 +108,24 @@ const CreateProjectModal = ({ closeAction }: ICreateProjectModalProps) => {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem("Token")}`,
                     }
-                }
-            )
-
-            toast.success("Project created successfully!");
-            closeAction();
-
-        } catch (error: any) {
-            console.log(error);
-            toast.error(error.response?.data?.message || error.message);
+                });
         }
+
+        toast.promise(
+            apiRequest().catch(error => {
+                throw error.response?.data?.message || error.message;
+            }),
+            {
+                loading: "Creating project",
+                success: "Project created successfully!",
+                error: (err) => err,
+            }
+        ).then(closeAction);
     }
 
     return (
-        <form onSubmit={createProject}>
-            <StyledModal elevation={3} style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "calc(100% - 40px)", maxWidth: "700px" }} >
+        <StyledModal elevation={3} style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "calc(100% - 40px)", maxWidth: "700px" }} >
+            <StyledForm onSubmit={createProject}>
                 <StyledTitle>New project</StyledTitle>
                 <StyledDiv>
                     <StyledContainer style={{ width: "60%" }}>
@@ -187,8 +189,8 @@ const CreateProjectModal = ({ closeAction }: ICreateProjectModalProps) => {
                 <IconButton onClick={closeAction} size="small" style={{ position: "absolute", top: "5px", right: "5px" }}>
                     <CloseIcon fontSize="small" />
                 </IconButton>
-            </StyledModal>
-        </form>
+            </StyledForm>
+        </StyledModal>
     );
 }
 

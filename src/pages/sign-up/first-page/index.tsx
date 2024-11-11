@@ -52,6 +52,7 @@ const FirstPage = ({ completeName, setCompleteName, username, setUsername, email
         try {
             if (data) {
                 const response = await api.get(`/users/exists/${data}`);
+                console.log(response.data)
                 return response.data.exists;
             }
             return false;

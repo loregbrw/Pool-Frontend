@@ -34,6 +34,17 @@ export const StyledModal = styled(Paper)`
     background-color: ${EColorPalette.MINTCREAM};
 `
 
+export const StyledForm = styled.form`
+    display: flex;
+    flex-direction: column;
+
+    gap: 15px;
+    align-items: center;
+
+    width: 100%;
+    padding: 10px;
+`
+
 export const StyledTitle = styled.span`
     font-size: 18px;
     font-weight: 600;

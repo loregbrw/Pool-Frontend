@@ -1,10 +1,10 @@
-import { StyledCard, StyledContainer, StyledContent, StyledDescription, StyledDiv, StyledGrid, StyledImg, StyledName, StyledTag, StyledTagName } from "./style";
-import { useEffect, useState } from "react";
-import { api } from "../../../../services/api";
 import toast from "react-hot-toast";
-
-import { Grid, Card } from '@mui/material';
 import EColorPalette from "../../../../enums/EColorPalette";
+
+import { api } from "../../../../services/api";
+import { Grid } from '@mui/material';
+import { useEffect, useState } from "react";
+import { StyledCard, StyledContainer, StyledContent, StyledDescription, StyledDiv, StyledGrid, StyledImg, StyledName, StyledTag, StyledTagName } from "./style";
 
 interface IProject {
     project: {
@@ -24,9 +24,10 @@ interface IProject {
 interface ICardsProps {
     reload: boolean;
     search: string;
+    tagId?: string;
 }
 
-const Cards = ({ reload, search }: ICardsProps) => {
+const Cards = ({ reload, search, tagId }: ICardsProps) => {
 
     const [projects, setProjects] = useState<IProject[]>([]);
 
@@ -34,22 +35,28 @@ const Cards = ({ reload, search }: ICardsProps) => {
 
         const getProjects = async () => {
             try {
-                const response = await api.get(`/projects?search=${search}`, {
+                const params = new URLSearchParams({
+                    search: search || "",
+                    ...(tagId ? { tagId } : {})
+                });
+        
+                const response = await api.get(`/projects?${params.toString()}`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem("Token")}`,
                     }
                 });
-
+        
                 setProjects(response.data.projects);
             } catch (error: any) {
                 console.log(error);
                 toast.error(error.response?.data?.message || error.message);
             }
         };
+        
 
         getProjects();
 
-    }, [reload, search]);
+    }, [reload, search, tagId]);
 
     if (!projects.length) {
         return (

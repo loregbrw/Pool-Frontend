@@ -20,7 +20,7 @@ const TagModal = ({ closeAction }: ITagModalProps) => {
     const createTag = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        try {
+        const apiRequest = async () => {
             await api.post("/tags", {
                 name: tagName,
                 color: tagColor
@@ -29,12 +29,18 @@ const TagModal = ({ closeAction }: ITagModalProps) => {
                     'Authorization': `Bearer ${localStorage.getItem("Token")}`,
                 }
             });
-            closeAction();
-            toast.success(`Tag created!`);
-        } catch (error: any) {
-            console.log(error);
-            toast.error(error.response?.data?.message || error.message);
         }
+
+        toast.promise(
+            apiRequest().catch(error => {
+                throw error.response?.data?.message || error.message;
+            }),
+            {
+                loading: "Creating tag",
+                success: "Tag created successfully!",
+                error: (err) => err,
+            }
+        ).then(closeAction);
     }
 
     return (

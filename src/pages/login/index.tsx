@@ -17,29 +17,29 @@ const Login = () => {
     const doLogin = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        try {
+        const apiRequest = async () => {
             const response = await api.post("/auth", {
                 login: login,
                 password: password
             });
-
-            localStorage.setItem("Token", response.data.token);
-
-            navigate("/home");
-            toast.success("User logged successfully!");
-
-        } catch (error: any) {
-
-            console.log(error);
-
-            if (error.response.data.message) {
-                toast.error(error.response.data.message);
-                return;
-            }
-
-            toast.error(error.message);
+            return response;
         }
+
+        toast.promise(
+            apiRequest().catch(error => {
+                throw error.response?.data?.message || error.message;
+            }),
+            {
+                loading: "Logging in",
+                success: "User logged in successfully!",
+                error: (err) => err,
+            }
+        ).then((response) => {
+            localStorage.setItem("Token", response.data.token);
+            navigate("/home");
+        });
     }
+
 
     const button: IButton = {
         title: "Sign in",

@@ -1,9 +1,10 @@
-import { StyledCardContent, StyledContainer, StyledDescription, StyledGrid, StyledName, StyledTagName } from "./style";
+import { StyledCard, StyledContainer, StyledContent, StyledDescription, StyledDiv, StyledGrid, StyledImg, StyledName, StyledTag, StyledTagName } from "./style";
 import { useEffect, useState } from "react";
 import { api } from "../../../../services/api";
 import toast from "react-hot-toast";
 
-import { Grid, CardMedia, Card } from '@mui/material';
+import { Grid, Card } from '@mui/material';
+import EColorPalette from "../../../../enums/EColorPalette";
 
 interface IProject {
     project: {
@@ -11,7 +12,7 @@ interface IProject {
         name: string;
         description: string;
         status: boolean;
-        tag: {
+        tag?: {
             id: string;
             name: string;
             color: string;
@@ -53,39 +54,36 @@ const Cards = ({ reload, search }: ICardsProps) => {
     if (!projects.length) {
         return (
             <StyledContainer>
-                Looks like you’re the first one here. Start a project and make it yours!
+                Looks like you’re the first one here!
             </StyledContainer>
         )
     }
 
     return (
         <>
-            <Grid container spacing={2} justifyContent="left">
+            <Grid container spacing={4} justifyContent="left">
                 {
                     projects.length > 0 ?
                         projects.map((project, index) => (
-                            <>
-                                <StyledGrid item xs={12} sm={6} md={4} lg={3} key={index}>
-                                    <Card>
-                                        <CardMedia
-                                            component="div"
-                                            style={{ backgroundColor: project.project.tag.color, height: 40, position: "relative" }}
-                                        >
-                                            <StyledTagName bgcolor={project.project.tag.color}>{ project.project.tag.name }</StyledTagName>
-                                        </CardMedia>
-                                        <StyledCardContent>
-                                            <StyledName>
-                                                {project.project.name}
-                                            </StyledName>
-                                            <StyledDescription>
-                                                {project.project.description}
-                                            </StyledDescription>
-                                        </StyledCardContent>
-                                    </Card>
-                                </StyledGrid>
-                            </>
+                            <StyledGrid item xs={12} sm={6} md={4} lg={3} key={index}>
+                                <StyledCard elevation={3}>
+                                    <StyledTag elevation={0} style={{ backgroundColor: project.project.tag?.color || EColorPalette.COOLGRAY }} >
+                                        <StyledTagName color={project.project.tag?.color || EColorPalette.ENGINEERINGORANGE}>{project.project.tag?.name}</StyledTagName>
+                                    </StyledTag>
+                                    <StyledContent>
+                                        <StyledName>{project.project.name}</StyledName>
+                                        <StyledDescription>{project.project.description}</StyledDescription>
+                                        <StyledDiv>
+                                            <StyledImg src="/User.png" />
+                                            <StyledImg src="/User.png" />
+                                            <StyledImg src="/User.png" />
+                                            <StyledName>+</StyledName>
+                                        </StyledDiv>
+                                    </StyledContent>
+                                </StyledCard>
+                            </StyledGrid>
                         ))
-                        : "Looks like you’re the first one here. Start a project and make it yours!"
+                        : "Looks like you’re the first one here!"
                 }
             </Grid >
         </>

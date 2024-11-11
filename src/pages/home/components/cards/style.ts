@@ -1,4 +1,4 @@
-import { CardContent, Grid } from "@mui/material";
+import { Grid, Paper } from "@mui/material";
 import styled from "styled-components";
 import EColorPalette from "../../../../enums/EColorPalette";
 import chroma from "chroma-js";
@@ -27,51 +27,88 @@ export const StyledGrid = styled(Grid)`
     transition: 300ms;
 
     border-radius: 5px;
+`
+
+export const StyledCard = styled(Paper)` 
+
+    && {
+        background-color: ${EColorPalette.FRENCHGRAY};
+        
+        cursor: pointer;
+        transition: 300ms;
+    }
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    width: 100%;
+
+    gap: 10px;
+    padding: 10px;
+
+    border-radius: 5px;
 
     &:hover {
-        filter: brightness(75%) saturate(125%);
+        filter: brightness(85%) saturate(115%);
     }
 `
 
-export const StyledCardContent = styled(CardContent)`
-    && {
-        background-color: ${EColorPalette.FRENCHGRAY};
+export const StyledContent = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
-        display: flex;
-        flex-direction: column;
+    gap: 10px;
+    padding: 0 3px;
+`
 
-        gap: 7px;
-        padding: 20px;
-    }
+export const StyledTag = styled(Paper)`
+    background-color: ${EColorPalette.BURNTSIENNA};
+    height: 40px;
 
-    &&:last-child {
-        padding-bottom: 20px;
-    }
+    width: 100%;
+    border-radius: 3px;
+    position: relative;
+
+    display: flex;
+    align-items: flex-end;  
+`
+
+export const StyledTagName = styled.span<{color: string}>`
+    color: ${(props) => getContrastYIQ(props.color)};
+    padding: 3px 5px;
+
+    font-size: 10px;
+    font-weight: 600;
 `
 
 export const StyledName = styled.span`
+    font-size: 15px;
     font-weight: 700;
-    font-size: 17px;
 `
 
 export const StyledDescription = styled.span`
-    font-size: 14px;
+    font-size: 13px;
     text-align: justify;
+
+    color: #454545;
     
     display: -webkit-box;            
     -webkit-line-clamp: 3;           
     -webkit-box-orient: vertical;   
     overflow: hidden;                
     text-overflow: ellipsis; 
-
-    filter: opacity(85%);
 `
 
-export const StyledTagName = styled.span<{bgcolor: string}>`
-    position: absolute;
 
-    color: ${(props) => getContrastYIQ(props.bgcolor)};
+export const StyledDiv = styled.div`
+    display: flex;
+    gap: 5px;
 
-    font-weight: 600;
-    font-size: 12px;
+`
+
+export const StyledImg = styled.img`
+    height: 20px;
+    border-radius: 999px;
 `

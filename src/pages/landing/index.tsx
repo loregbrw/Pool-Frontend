@@ -14,7 +14,7 @@ const Landing = () => {
                 </>
             } />
             <StyledMain >
-                helloo
+                helloooo
             </StyledMain>
             <StyledFooter/>
         </>

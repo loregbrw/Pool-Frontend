@@ -34,15 +34,16 @@ const FirstPage = ({ completeName, setCompleteName, username, setUsername, email
 
     const button: IButton = {
         title: "Continue",
-        action: (e: React.FormEvent) => {
+        action: async (e: React.FormEvent) => {
             e.preventDefault();
 
-            if (invalidBirthDate)
-                toast.error("Invalid birth date!");
-            else if (invalidEmail)
-                toast.error("Invalid email!");
-            else if (invalidUsername)
-                toast.error("Invalid username!");
+            if (invalidUsername) {
+                toast("* Username must be at least 5 characters and can only include letters, numbers, commas, and periods.", { position: "top-right" })
+                return;
+            } else if (await checkData(username)) {
+                toast.error("Username already in use")
+                return;
+            }
 
             setInit(false);
         }
@@ -72,12 +73,12 @@ const FirstPage = ({ completeName, setCompleteName, username, setUsername, email
 
     const checkusername = async (value: string) => {
         setUsername(value);
-        setInvalidUsername(await checkData(value) || !/^[a-zA-Z0-9_.]*$/.test(value));
+        setInvalidUsername(!/^[a-zA-Z0-9_.]*$/.test(value) || value.length < 5);
     }
 
     const checkEmail = async (value: string) => {
         setEmail(value);
-        setInvalidEmail(await checkData(value) || !/^(|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/.test(value));
+        setInvalidEmail(!/^(|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/.test(value));
     }
 
     const checkBirthDate = (value: Dayjs | null) => {

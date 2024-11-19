@@ -37,11 +37,14 @@ const FirstPage = ({ completeName, setCompleteName, username, setUsername, email
         action: async (e: React.FormEvent) => {
             e.preventDefault();
 
-            if (invalidUsername) {
-                toast("* Username must be at least 5 characters and can only include letters, numbers, commas, and periods.", { position: "top-right" })
+            if (invalidUsername){
+                toast.error("Invalid username");
                 return;
-            } else if (await checkData(username)) {
-                toast.error("Username already in use")
+            } if (invalidEmail){
+                toast.error("Invalid email");
+                return;
+            } if (invalidBirthDate){
+                toast.error("Invalid birth date");
                 return;
             }
 
@@ -53,7 +56,6 @@ const FirstPage = ({ completeName, setCompleteName, username, setUsername, email
         try {
             if (data) {
                 const response = await api.get(`/users/exists/${data}`);
-                console.log(response.data)
                 return response.data.exists;
             }
             return false;
@@ -71,14 +73,16 @@ const FirstPage = ({ completeName, setCompleteName, username, setUsername, email
         return age >= 13 && age <= 120;
     }
 
-    const checkusername = async (value: string) => {
+    const checkUsername = async (value: string) => {
         setUsername(value);
         setInvalidUsername(!/^[a-zA-Z0-9_.]*$/.test(value) || value.length < 5);
     }
 
-    const checkEmail = async (value: string) => {
+    const checkEmail = (value: string) => {
         setEmail(value);
         setInvalidEmail(!/^(|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/.test(value));
+
+
     }
 
     const checkBirthDate = (value: Dayjs | null) => {
@@ -102,7 +106,13 @@ const FirstPage = ({ completeName, setCompleteName, username, setUsername, email
                     label="Username"
                     value={username}
                     error={invalidUsername}
-                    onChange={(e) => checkusername(e.target.value)}
+                    onChange={(e) => checkUsername(e.target.value)}
+                    onBlur={async (e) => {
+                        if (await checkData(e.target.value)) {
+                            setInvalidUsername(true);
+                            toast.error("Username already in use");
+                        }
+                    }}
                     inputProps={{ maxLength: 50 }}
                     required
                 />
@@ -112,6 +122,12 @@ const FirstPage = ({ completeName, setCompleteName, username, setUsername, email
                     value={email}
                     error={invalidEmail}
                     onChange={(e) => checkEmail(e.target.value)}
+                    onBlur={async (e) => {
+                        if (await checkData(e.target.value)) {
+                            setInvalidEmail(true);
+                            toast.error("Email already in use");
+                        }
+                    }}
                     inputProps={{ maxLength: 255 }}
                     required
                 />

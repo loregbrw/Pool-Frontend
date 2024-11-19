@@ -79,26 +79,32 @@ const SecondPage = ({ completeName, username, email, birthDate, setInit }: ISeco
             return;
         }
 
-        try {
-            const response = await api.post("/users", {
+        const apiRequest = async () => {
+            await api.post("/users", {
                 name: completeName,
                 username,
                 email,
                 birthdate: birthDate,
                 password,
             });
-
-            navigate("/");
-            toast.success("New account created!");
-        } catch (error: any) {
-            console.log(error);
-            toast.error(error.response?.data?.message || error.message);
         }
-    };
+
+        toast.promise(
+            apiRequest().catch(error => {
+                throw error.response?.data?.message || error.message;
+            }),
+            {
+                loading: "Creating account",
+                success: "New account created successfully!",
+                error: (err) => err,
+            }
+        ).then(() => navigate("/"));
+    }
+
     const button: IButton = {
         title: "Sign up",
         action: register,
-    };
+    }
 
     const PasswordForm = () => (
         <>

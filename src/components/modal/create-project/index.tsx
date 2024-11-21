@@ -95,22 +95,24 @@ const CreateProjectModal = ({ closeAction }: ICreateProjectModalProps) => {
         }
 
         const apiRequest = async () => {
-            await api.post("/projects",
-                {
-                    name: projectName,
-                    description: projectDescription,
-                    tagId: projectTag?.id,
-                    users: [],
-                    sprintInitialDate: projectInitialDate,
-                    sprintDuration: projectDuration
-                },
-                {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem("Token")}`,
-                    }
-                });
-        }
-
+            const requestData: any = {
+                name: projectName,
+                description: projectDescription,
+                users: [],
+                sprintInitialDate: projectInitialDate,
+                sprintDuration: projectDuration
+            };
+        
+            if (projectTag) {
+                requestData.tagId = projectTag.id;
+            }
+        
+            await api.post("/projects", requestData, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem("Token")}`,
+                }
+            });
+        };
         toast.promise(
             apiRequest().catch(error => {
                 throw error.response?.data?.message || error.message;

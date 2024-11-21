@@ -75,7 +75,7 @@ const SecondPage = ({ completeName, username, email, birthDate, setInit }: ISeco
         }
         
         if (password !== confirmPassword) {
-            toast.error("Password and confirm password must match!");
+            toast.error("Passwords do not match!");
             return;
         }
 

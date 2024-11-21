@@ -4,7 +4,7 @@ import EColorPalette from "../../../../enums/EColorPalette";
 import { api } from "../../../../services/api";
 import { Grid } from '@mui/material';
 import { useEffect, useState } from "react";
-import { StyledCard, StyledContainer, StyledContent, StyledDescription, StyledDiv, StyledGrid, StyledImg, StyledName, StyledTag, StyledTagName } from "./style";
+import { StyledCard, StyledContainer, StyledContent, StyledDescription, StyledDiv, StyledGrid, StyledImg, StyledMain, StyledName, StyledSection, StyledSectionName, StyledTag } from "./style";
 
 interface IProject {
     project: {
@@ -48,13 +48,13 @@ const Cards = ({ reload, search, tagId }: ICardsProps) => {
                     }
                 });
 
+                (response.data.projects);
                 setProjects(response.data.projects);
             } catch (error: any) {
                 console.log(error);
                 toast.error(error.response?.data?.message || error.message);
             }
         };
-
 
         getProjects();
 
@@ -70,29 +70,55 @@ const Cards = ({ reload, search, tagId }: ICardsProps) => {
 
     return (
         <>
-            <Grid container spacing={4} justifyContent="left">
-                {
-                    projects.map((project, index) => (
-                        <StyledGrid item xs={12} sm={6} md={4} lg={3} key={index}>
-                            <StyledCard elevation={3}>
-                                <StyledTag elevation={0} style={{ backgroundColor: project.project.tag?.color || EColorPalette.COOLGRAY }} >
-                                    <StyledTagName color={project.project.tag?.color || EColorPalette.ENGINEERINGORANGE}>{project.project.tag?.name}</StyledTagName>
-                                </StyledTag>
-                                <StyledContent>
-                                    <StyledName>{project.project.name}</StyledName>
-                                    <StyledDescription>{project.project.description}</StyledDescription>
-                                    <StyledDiv>
-                                        <StyledImg src="/User.png" />
-                                        <StyledImg src="/User.png" />
-                                        <StyledImg src="/User.png" />
-                                        <StyledName>+</StyledName>
-                                    </StyledDiv>
-                                </StyledContent>
-                            </StyledCard>
-                        </StyledGrid>
-                    ))
-                }
-            </Grid >
+        <StyledMain>
+
+            {
+                (() => {
+                    const groupedProjects: { [key: string]: IProject[] } = projects.reduce((acc, project) => {
+                        const tagName = project.project.tag?.name || "My projects";
+                        if (!acc[tagName]) acc[tagName] = [];
+                        acc[tagName].push(project);
+                        return acc;
+                    }, {} as { [key: string]: IProject[] });
+
+                    const sortedGroupNames = Object.keys(groupedProjects).sort((a, b) => {
+                        if (a === "My projects") return -1;
+                        if (b === "My projects") return 1; 
+                        return a.localeCompare(b); 
+                    });
+
+                    return sortedGroupNames.map((tagName, index) => (
+                        <StyledSection key={index}>
+                            <StyledSectionName>{tagName}</StyledSectionName>
+                            <Grid container spacing={4} justifyContent="left">
+                                {groupedProjects[tagName].map((project, i) => (
+                                    <StyledGrid item xs={12} sm={6} md={4} lg={3} key={i}>
+                                        <StyledCard elevation={3}>
+                                            <StyledTag
+                                                style={{
+                                                    backgroundColor: project.project.tag?.color || EColorPalette.COOLGRAY,
+                                                }}
+                                            >
+                                            </StyledTag>
+                                            <StyledContent>
+                                                <StyledName>{project.project.name}</StyledName>
+                                                <StyledDescription>{project.project.description}</StyledDescription>
+                                                <StyledDiv>
+                                                    <StyledImg src="/User.png" />
+                                                    <StyledImg src="/User.png" />
+                                                    <StyledImg src="/User.png" />
+                                                    <StyledName>+</StyledName>
+                                                </StyledDiv>
+                                            </StyledContent>
+                                        </StyledCard>
+                                    </StyledGrid>
+                                ))}
+                            </Grid>
+                        </StyledSection>
+                    ));
+                })()
+            }
+        </StyledMain>
         </>
     )
 }

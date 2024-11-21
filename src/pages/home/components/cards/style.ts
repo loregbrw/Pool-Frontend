@@ -2,14 +2,7 @@ import { Grid, Paper } from "@mui/material";
 import styled from "styled-components";
 import EColorPalette from "../../../../enums/EColorPalette";
 import chroma from "chroma-js";
-
-const getContrastYIQ = (color: string): string => {
-    const luminance = chroma(color).luminance();
-
-    return luminance > 0.5
-        ? chroma(color).darken(3).hex() 
-        : chroma(color).brighten(3).hex(); 
-};
+import { getContrastYIQ } from "../../../../components/style";
 
 export const StyledContainer = styled.div`
     display: flex;
@@ -22,12 +15,14 @@ export const StyledContainer = styled.div`
 `
 
 export const StyledGrid = styled(Grid)`
-        
+    display: flex;
+    flex-direction: column;
+    align-items: stretch; /* Faz os itens preencherem toda a altura */
     cursor: pointer;
     transition: 300ms;
-
     border-radius: 5px;
-`
+`;
+
 
 export const StyledCard = styled(Paper)` 
 
@@ -61,11 +56,13 @@ export const StyledContent = styled.div`
 
     gap: 10px;
     padding: 0 3px;
+
+    height: calc(100% - 45px);
 `
 
-export const StyledTag = styled(Paper)`
+export const StyledTag = styled.div`
     background-color: ${EColorPalette.BURNTSIENNA};
-    height: 40px;
+    height: 35px;
 
     width: 100%;
     border-radius: 3px;
@@ -81,6 +78,8 @@ export const StyledTagName = styled.span<{color: string}>`
 
     font-size: 10px;
     font-weight: 500;
+
+    filter: opacity(50%);
 `
 
 export const StyledName = styled.span`
@@ -92,15 +91,15 @@ export const StyledDescription = styled.span`
     font-size: 13px;
     text-align: justify;
 
+    height: 100%;
     color: #454545;
-    
+
     display: -webkit-box;            
     -webkit-line-clamp: 3;           
     -webkit-box-orient: vertical;   
     overflow: hidden;                
     text-overflow: ellipsis; 
 `
-
 
 export const StyledDiv = styled.div`
     display: flex;
@@ -111,4 +110,33 @@ export const StyledDiv = styled.div`
 export const StyledImg = styled.img`
     height: 20px;
     border-radius: 999px;
+`
+
+export const StyledSection = styled.div`
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+
+    background-color: ${chroma(EColorPalette.MINTCREAM).darken(0.2).hex()};
+    padding: 15px;
+    border-radius: 5px;
+`
+
+export const StyledSectionName = styled.span`
+    font-size: 20px;
+    font-weight: 700;
+
+    color: #454545;
+`
+
+export const StyledMain = styled.main`
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 20px;
 `

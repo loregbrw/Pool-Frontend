@@ -80,7 +80,7 @@ const SecondPage = ({ completeName, username, email, birthDate, setInit }: ISeco
         }
 
         try {
-            const response = await api.post("/users", {
+            await api.post("/users", {
                 name: completeName,
                 username,
                 email,

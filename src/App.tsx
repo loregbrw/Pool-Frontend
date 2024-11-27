@@ -5,7 +5,6 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 
 import { api } from "./services/api";
 import { IconButton } from "@mui/material"
-import { useNavigate } from "react-router-dom";
 import { StyledLink } from "./components/header/style"
 import { StyledProfile, StyledProfileImg } from "./style"
 import { StyledModalBackground } from "./components/modal/style";
@@ -21,9 +20,7 @@ interface IUser {
 
 export const App = ({ children }: { children: React.ReactNode }) => {
 
-  const navigate = useNavigate();
   const [user, setUser] = useState<IUser | null>(null);
-
   const [profileModal, setProfileModal] = useState(false);
 
   useEffect(() => {

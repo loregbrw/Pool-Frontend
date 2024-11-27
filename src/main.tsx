@@ -14,6 +14,7 @@ import Landing from "./pages/landing/index.tsx";
 import { App } from './App.tsx';
 import { Toaster } from 'react-hot-toast';
 import { ThemeProvider } from './contexts/theme.tsx';
+import Project from "./pages/project/index.tsx";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,13 @@ const router = createBrowserRouter([
         <Home />
       </App> 
   },
+  {
+    path: "/project/:id",
+    element:
+      <App>
+        <Project />
+      </App>
+  }
 
 ]);
 
@@ -42,7 +50,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ThemeProvider>
       <RouterProvider router={router} />
-      <Toaster />
     </ThemeProvider>
+    <Toaster />
   </React.StrictMode>
 );

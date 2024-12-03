@@ -9,6 +9,8 @@ import { useEffect, useRef, useState } from "react";
 import { StyledDescription, StyledName } from "../style";
 import { StyledFooter, StyledForm, StyledNameInput, StyledSprint, StyledSprintName } from "./style";
 import HeaderSprint from './components/header-sprint';
+import { StyledContent } from './components/content/style';
+import Column from './components/content/column';
 
 interface ISprintProps {
     sprint: ISprint | undefined;
@@ -25,6 +27,7 @@ const Sprint = ({ sprint }: ISprintProps) => {
     const inputRef = useRef<HTMLInputElement>(null);
     const [editingNameSprint, setEditingNameSprint] = useState(false);
 
+    const [progress, setProgress] = useState(0);
     const [inputWidth, setInputWidth] = useState("");
     const [editingName, setEditingName] = useState("");
 
@@ -47,6 +50,22 @@ const Sprint = ({ sprint }: ISprintProps) => {
         setEditingNameSprint(true);
 
         calculateWidth(currentSprint.name);
+    }
+
+    const getData = async () => {
+        try {
+            const response = await api.get(`/columns/sprint/${sprint.id}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("Token")}`,
+                },
+            });
+
+            setCurrentSprint({ ...currentSprint, columns: response.data.columns });
+            setProgress(response.data.progress / 100)
+
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     const apiRequest = async () => {
@@ -85,10 +104,29 @@ const Sprint = ({ sprint }: ISprintProps) => {
 
     }, [editingNameSprint]);
 
+    useEffect(() => {
+        getData();
+    })
+
     return (
         <>
             <StyledSprint>
-                <HeaderSprint />
+                <HeaderSprint
+                    timeProgress={
+                        Math.min(
+                            (Math.floor(Math.abs(new Date().getTime() - new Date(currentSprint.initialDate).getTime()) / (1000 * 60 * 60 * 24)) + 1) / currentSprint.duration,
+                            1
+                        )
+                    }
+                    tasksProgress={progress}
+                />
+                <StyledContent>
+                    {
+                        currentSprint.columns?.map((col, index) => (
+                            <Column key={index} column={col} />
+                        ))
+                    }
+                </StyledContent>
             </StyledSprint>
             <StyledFooter>
                 <IconButton size="small" aria-label="notifications" >
@@ -106,7 +144,17 @@ const Sprint = ({ sprint }: ISprintProps) => {
                         </StyledForm>
                     }
                     <StyledDescription style={{ textAlign: "center" }} >
-                        {Math.floor(Math.abs(new Date().getTime() - new Date(currentSprint.initialDate).getTime()) / (1000 * 60 * 60 * 24)) + 1}º dia de {currentSprint.duration} dia{currentSprint.duration > 1 ? "s" : ""}
+                        {
+                            (() => {
+
+                                const day = Math.floor(Math.abs(new Date().getTime() - new Date(sprint.initialDate).getTime()) / (1000 * 60 * 60 * 24)) + 1;
+                                if (day > currentSprint.duration)
+                                    return "Sprint completed"
+
+                                const suffix = day === 1 ? "st" : day === 2 ? "nd" : day === 3 ? "rd" : "th";
+                                return `${day}${suffix} day of ${sprint.duration} day${sprint.duration > 1 ? "s" : ""}`;
+                            })()
+                        }
                     </StyledDescription>
                 </StyledSprintName>
                 <IconButton size="small" aria-label="notifications" >

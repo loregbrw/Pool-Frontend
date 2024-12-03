@@ -1,9 +1,8 @@
 import styled from "styled-components";
 import EColorPalette from "../../../../enums/EColorPalette";
-import chroma from "chroma-js";
 
 export const StyledSprint = styled.main`
-    display: flex;
+    display: flex !important;
     flex-direction: column;
 
     height: calc(100% - 50px);
@@ -17,6 +16,8 @@ export const StyledSprint = styled.main`
 
     overflow-x: auto;
     white-space: nowrap;
+
+    gap: 10px;
 
     &::-webkit-scrollbar {
         background-color: ${EColorPalette.JET};
@@ -32,10 +33,6 @@ export const StyledSprint = styled.main`
     }
 `
 
-export const StyledCards = styled.div`
-
-`
-
 export const StyledFooter = styled.footer`
     height: 50px;
     background-color: ${EColorPalette.MINTCREAM};
@@ -45,6 +42,8 @@ export const StyledFooter = styled.footer`
 
     align-items: center;
     justify-content: space-between;
+
+    border-top: 3px solid ${EColorPalette.JET};
 `
 
 export const StyledSprintName = styled.div`
@@ -54,6 +53,7 @@ export const StyledSprintName = styled.div`
     width: 100%;
     height: 100%;
 
+    align-items: center;
     justify-content: center;
 `
 

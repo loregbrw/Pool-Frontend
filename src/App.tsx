@@ -1,6 +1,6 @@
 import Header from "./components/header";
 import React, { useEffect, useState } from "react"
-import ProfileModal from "./components/modal/profile";
+import OptionsModal from "./components/modal/options";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 
 import { api } from "./services/api";
@@ -8,6 +8,7 @@ import { IconButton } from "@mui/material"
 import { StyledLink } from "./components/header/style"
 import { StyledProfile, StyledProfileImg } from "./style"
 import { StyledModalBackground } from "./components/modal/style";
+import { useNavigate } from "react-router-dom";
 
 interface IUser {
   birthdate: Date;
@@ -22,6 +23,8 @@ export const App = ({ children }: { children: React.ReactNode }) => {
 
   const [user, setUser] = useState<IUser | null>(null);
   const [profileModal, setProfileModal] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getUser = async () => {
@@ -58,7 +61,14 @@ export const App = ({ children }: { children: React.ReactNode }) => {
               {
                 profileModal &&
                 <>
-                  <ProfileModal />
+                  <OptionsModal options={[
+                    { label: "My profile", action: () => {} },
+                    { label: "Log out", action: () => {
+                      localStorage.removeItem("Token");
+                      navigate("/");
+                    }}
+                  ]}
+                  align="right" />
                   <StyledModalBackground onClick={() => setProfileModal(false)} />
                 </>
               }

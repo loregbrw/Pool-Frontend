@@ -7,10 +7,22 @@ import Loading from "../../components/loading";
 import { StyledMain } from "../../components/style";
 import Sprint from "./components/sprint";
 
+export interface ICard {
+    id: string;
+    description: string;
+    dueDate: Date;
+    index: number;
+    name: string;
+    status: boolean;
+    tags: [];
+    users: [];
+}
+
 export interface IColumn {
     id: string;
     index: number;
     name: string;
+    cards: ICard[]
 }
 
 export interface ISprint {
@@ -51,9 +63,11 @@ const Project = () => {
                     'Authorization': `Bearer ${localStorage.getItem("Token")}`,
                 }
             });
-
-            const projectData: IProject = response.data?.project;
+            
+            const projectData: IProject = response.data;
             setProject(projectData);
+
+            console.log(response.data)
 
             const projectSprints = projectData.project.sprints;
 

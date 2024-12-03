@@ -21,6 +21,9 @@ export const StyledName = styled.span`
     overflow: hidden;
     text-overflow: ellipsis;
 
+    width: fit-content;
+    user-select: none;
+
     &:hover {
         color: ${chroma(EColorPalette.JET).darken(1).hex()}
     }
@@ -38,4 +41,5 @@ export const StyledDescription = styled.span`
     text-overflow: ellipsis;
 
     width: 100%;
+    cursor: default;
 `

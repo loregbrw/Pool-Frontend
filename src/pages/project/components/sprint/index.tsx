@@ -2,7 +2,7 @@ import toast from 'react-hot-toast';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
-import { ISprint } from "../..";
+import { IColumn, ISprint } from "../..";
 import { IconButton } from "@mui/material";
 import { api } from '../../../../services/api';
 import { useEffect, useRef, useState } from "react";
@@ -11,6 +11,8 @@ import { StyledFooter, StyledForm, StyledNameInput, StyledSprint, StyledSprintNa
 import HeaderSprint from './components/header-sprint';
 import { StyledContent } from './components/content/style';
 import Column from './components/content/column';
+import Loading from '../../../../components/loading';
+import { StyledAdd, StyledAddSpan } from './components/content/card/style';
 
 interface ISprintProps {
     sprint: ISprint | undefined;
@@ -30,6 +32,8 @@ const Sprint = ({ sprint }: ISprintProps) => {
     const [progress, setProgress] = useState(0);
     const [inputWidth, setInputWidth] = useState("");
     const [editingName, setEditingName] = useState("");
+
+    const [loading, setLoading] = useState(true);
 
     const calculateWidth = (s: string) => {
         const spaces = s.split(" ").length - 1;
@@ -65,6 +69,8 @@ const Sprint = ({ sprint }: ISprintProps) => {
 
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -98,6 +104,37 @@ const Sprint = ({ sprint }: ISprintProps) => {
         ).then(() => setEditingNameSprint(false));
     }
 
+    const apiRequestAdd = async () => {
+        const response = await api.post(`/columns`,
+            {
+                name: "New Column",
+                index: currentSprint?.columns?.length ? currentSprint.columns.length : 0,
+
+                sprintId: currentSprint?.id
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("Token")}`,
+                },
+            });
+
+        const newColumn: IColumn = response.data.column;
+        setCurrentSprint({ ...currentSprint!, columns: [...currentSprint?.columns!, { ...newColumn, cards: [] }] });
+    }
+
+    const addColumn = async () => {
+        toast.promise(
+            apiRequestAdd().catch(error => {
+                throw error.response?.data?.message || error.message;
+            }),
+            {
+                loading: "Creating column...",
+                success: "Column created successfully!",
+                error: (err) => err,
+            }
+        )
+    }
+
     useEffect(() => {
         if (editingNameSprint && inputRef.current)
             inputRef.current.focus();
@@ -107,6 +144,17 @@ const Sprint = ({ sprint }: ISprintProps) => {
     useEffect(() => {
         getData();
     })
+
+    if (loading) {
+        return (
+            <>
+                <StyledSprint>
+                    <Loading />
+                </StyledSprint>
+                <StyledFooter />
+            </>
+        )
+    }
 
     return (
         <>
@@ -126,6 +174,11 @@ const Sprint = ({ sprint }: ISprintProps) => {
                             <Column key={index} column={col} />
                         ))
                     }
+                    <StyledAdd onClick={addColumn}>
+                        <StyledAddSpan>
+                            Add new column +
+                        </StyledAddSpan>
+                    </StyledAdd>
                 </StyledContent>
             </StyledSprint>
             <StyledFooter>

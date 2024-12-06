@@ -31,7 +31,27 @@ export const StyledModal = styled(Paper)`
     gap: 15px;
     align-items: center;
 
-    background-color: ${EColorPalette.MINTCREAM};
+    && {
+
+        background-color: ${EColorPalette.MINTCREAM};
+    }
+
+    overflow-x: auto;
+    white-space: nowrap;
+
+    &::-webkit-scrollbar {
+        background-color: ${EColorPalette.COOLGRAY};
+        width: 10px;
+
+        border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: ${EColorPalette.FRENCHGRAY};
+        border-radius: 15px;
+
+        border: solid ${EColorPalette.COOLGRAY} 2px;
+    }
 `
 
 export const StyledForm = styled.form`
@@ -64,7 +84,7 @@ export const StyledInput = styled.input<{ error?: boolean }>`
 
     color: ${(props) => props.error ? EColorPalette.ENGINEERINGORANGE : EColorPalette.JET};
 
-    border: ${(props) => props.error ? `solid 2px ${EColorPalette.ENGINEERINGORANGE}` : "none" }
+    border: ${(props) => props.error ? `solid 2px ${EColorPalette.ENGINEERINGORANGE}` : "none" };
 `
 
 export const StyledLabel = styled.span`

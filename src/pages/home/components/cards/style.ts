@@ -17,10 +17,8 @@ export const StyledContainer = styled.div`
 export const StyledGrid = styled(Grid)`
     display: flex;
     flex-direction: column;
-    align-items: stretch; /* Faz os itens preencherem toda a altura */
+    align-items: stretch;
     cursor: pointer;
-    transition: 300ms;
-    border-radius: 5px;
 `;
 
 

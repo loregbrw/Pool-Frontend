@@ -8,7 +8,6 @@ import { StyledCard, StyledCardDescription, StyledCardName, StyledDate, StyledEm
 import { StyledForm, StyledNameInput } from "../../../style";
 import { IconButton } from "@mui/material";
 import { api } from '../../../../../../../services/api';
-import StyledTooltip from '../../../../../../../components/tooltip';
 import { StyledModalBackground } from '../../../../../../../components/modal/style';
 import CardModal from './modal';
 
@@ -26,6 +25,10 @@ const Card = ({ card }: ICardProps) => {
     const [editingNameCard, setEditingNameCard] = useState(false);
 
     const [openCard, setOpenCard] = useState(false);
+
+    useEffect(() => {
+        setCurrentCard(card);
+    }, [card])
 
     useEffect(() => {
         if (editingNameCard && inputRef.current)
@@ -50,7 +53,7 @@ const Card = ({ card }: ICardProps) => {
             });
 
         const newCard = response.data.card;
-        setCurrentCard({ ...card, name: newCard.name })
+        setCurrentCard({ ...currentCard, name: newCard.name })
     }
 
     const editCardName = async (e: React.FormEvent) => {
@@ -66,6 +69,37 @@ const Card = ({ card }: ICardProps) => {
                 error: (err) => err,
             }
         ).then(() => setEditingNameCard(false));
+
+    }
+
+    const apiRequestStatus = async () => {
+        const response = await api.patch(`/cards/${currentCard.id}`,
+            {
+                status: !currentCard.status
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("Token")}`,
+                },
+            });
+
+        const newCard = response.data.card;
+        setCurrentCard({ ...currentCard, status: newCard.status });
+    }
+
+    const toggleStatus = async (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+        e.stopPropagation();
+
+        toast.promise(
+            apiRequestStatus().catch(error => {
+                throw error.response?.data?.message || error.message;
+            }),
+            {
+                loading: "Toggling card status...",
+                success: !currentCard.status ? "Finished card!" : "Unfinished card!",
+                error: (err) => err,
+            }
+        )
     }
 
     return (
@@ -74,12 +108,7 @@ const Card = ({ card }: ICardProps) => {
                 <StyledSpaceBetween>
                     {
                         !editingNameCard &&
-                        <StyledTooltip
-                            title={currentCard.name}
-                            placement="top-start">
-                                
-                            <StyledCardName onClick={(e) => e.stopPropagation()} onDoubleClick={openEditName} style={{ fontSize: "15px" }}>{currentCard?.name}</StyledCardName>
-                        </StyledTooltip>
+                        <StyledCardName onClick={(e) => e.stopPropagation()} onDoubleClick={openEditName} style={{ fontSize: "15px" }}>{currentCard?.name}</StyledCardName>
                     }
                     {
                         editingNameCard &&
@@ -87,7 +116,7 @@ const Card = ({ card }: ICardProps) => {
                             <StyledNameInput maxLength={50} ref={inputRef} onBlur={() => setEditingNameCard(false)} type="text" value={editingName} onChange={(e) => setEditingName(e.target.value)} style={{ textAlign: "left", fontSize: "14px" }} required />
                         </StyledForm>
                     }
-                    <IconButton size="small" aria-label="notifications" onClick={(e) => e.stopPropagation()} >
+                    <IconButton size="small" aria-label="notifications" onClick={(e) => e.stopPropagation()} style={{ alignSelf: "flex-start" }} >
                         <MoreVertIcon fontSize="small" />
                     </IconButton>
                 </StyledSpaceBetween>
@@ -99,14 +128,14 @@ const Card = ({ card }: ICardProps) => {
                 }
                 <StyledSpaceBetween style={{ alignItems: "flex-end" }}>
                     <StyledUsers>
-                        {/* <StyledImg src="/User.png" />
                         <StyledImg src="/User.png" />
                         <StyledImg src="/User.png" />
-                        <StyledCardName>+</StyledCardName> */}
+                        <StyledImg src="/User.png" />
+                        <StyledCardName>+</StyledCardName>
                     </StyledUsers>
                     <StyledDate>
-                        {card?.dueDate ? new Date(card.dueDate).toLocaleDateString() : ''}
-                        <StyledEmoji onClick={() => { }}>{card?.status === false ? "🔴" : "🟢"}</StyledEmoji>
+                        {currentCard?.dueDate ? new Date(currentCard.dueDate).toLocaleDateString() : ''}
+                        <StyledEmoji onClick={toggleStatus}>{currentCard?.status === false ? "🔴" : "🟢"}</StyledEmoji>
                     </StyledDate>
                 </StyledSpaceBetween>
             </StyledCard>

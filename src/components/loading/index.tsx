@@ -1,11 +1,14 @@
-import "./css/style.css"
+import { LoadingContainer, Ripple } from "./style";
 
 const Loading = () => {
     return (
-        <>
-            <div className="lds-ripple"><div></div><div></div></div>
-        </>
-    )
-}
+        <LoadingContainer>
+            <Ripple>
+                <div></div>
+                <div></div>
+            </Ripple>
+        </LoadingContainer>
+    );
+};
 
 export default Loading;

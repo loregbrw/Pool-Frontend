@@ -36,20 +36,20 @@ export const StyledMain = styled.main`
 export const StyledButton = styled(Button)<{ bgcolor: string }>`
     && {
 
-    height: 100%;
+        height: 100%;
 
-    border-radius: 5px;
-    color: ${EColorPalette.MINTCREAM};
-    background-color: ${(props) => props.bgcolor};
+        border-radius: 5px;
+        color: ${EColorPalette.MINTCREAM};
+        background-color: ${(props) => props.bgcolor};
 
-    padding: 5px 20px;
-    text-transform: none;
+        padding: 5px 20px;
+        text-transform: none;
 
-    font-size: 12px;
-    font-weight: 700;
-    font-family: 'Euclid Circular A', sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        font-family: 'Euclid Circular A', sans-serif;
 
-    cursor: pointer;
+        cursor: pointer;
         transition: 300ms;
     }
 

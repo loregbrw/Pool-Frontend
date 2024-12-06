@@ -101,7 +101,7 @@ const Project = () => {
 
     if (loading) {
         return (
-            <StyledMain style={{ paddingTop: "136px" }}>
+            <StyledMain>
                 <Loading />
             </StyledMain>
         )

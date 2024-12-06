@@ -19,6 +19,8 @@ export const StyledCard = styled(Paper)`
         
         cursor: pointer;
 
+        gap: 7px;
+
         border: 3px solid ${EColorPalette.MINTCREAM};
         transition: 300ms;
     }
@@ -29,14 +31,15 @@ export const StyledCard = styled(Paper)`
 `
 
 export const StyledCardName = styled.span`
-    font-size: 14px;
+    font-size: 14px !important;
     font-weight: 700;
 
     overflow: hidden;                
-    text-overflow: ellipsis;
 
     user-select: none;
     cursor: pointer;
+
+    white-space: normal;
 `
 
 export const StyledCardDescription = styled.span`
@@ -92,8 +95,44 @@ export const StyledEmoji = styled.span`
     transition: 300ms;
 
     margin-right: 6px;
+    cursor: pointer;
 
     &:hover {
         filter: brightness(85%);
     }
+`
+
+export const StyledAdd = styled(Paper)`
+
+    width: 265px;
+    
+    && {
+        border-radius: 5px;
+        background-color: ${EColorPalette.COOLGRAY};
+        transition: 300ms;
+    }
+    
+    padding: 8px;
+
+    height: fit-content;
+  
+    cursor: pointer;
+
+    &:hover {
+        filter: brightness(85%) saturate(115%);
+    }
+`
+
+export const StyledAddSpan = styled.span`
+    font-size: 17px;
+    font-weight: 700;
+
+    user-select: none;
+    
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 34px;
 `

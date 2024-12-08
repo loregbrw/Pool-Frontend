@@ -21,7 +21,6 @@
     "chroma-js": "^3.1.2",
     "dayjs": "^1.11.13",
     "react": "^18.3.1",
-    "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.3.1",
     "react-hot-toast": "^2.4.1",
     "react-markdown": "^9.0.1",
@@ -36,7 +35,6 @@
   "devDependencies": {
     "@eslint/js": "^9.13.0",
     "@types/react": "^18.3.11",
-    "@types/react-beautiful-dnd": "^13.1.8",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.3",
     "eslint": "^9.13.0",

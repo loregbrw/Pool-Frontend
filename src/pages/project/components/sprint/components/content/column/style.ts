@@ -39,7 +39,7 @@ export const StyledContent = styled.div`
 
     &::-webkit-scrollbar {
         background-color: ${EColorPalette.JET};
-        width: 10px;
+        width: 8px;
 
         border-radius: 10px;
     }
@@ -51,7 +51,6 @@ export const StyledContent = styled.div`
         border: solid ${EColorPalette.JET} 2px;
     }
 `
-
 
 export const StyledSections = styled.div`
     display: flex;

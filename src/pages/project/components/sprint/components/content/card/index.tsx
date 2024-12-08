@@ -1,15 +1,17 @@
+import CardModal from './modal';
 import toast from 'react-hot-toast';
+import StyledMarkdown from './markdown';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-import { useEffect, useRef, useState } from "react";
 import { ICard } from "../../../../..";
-import { StyledSpaceBetween } from "../column/style";
-import { StyledCard, StyledCardDescription, StyledCardName, StyledDate, StyledEmoji, StyledImg, StyledUsers } from "./style";
-import { StyledForm, StyledNameInput } from "../../../style";
 import { IconButton } from "@mui/material";
+import { StyledSection } from './modal/style';
+import { useEffect, useRef, useState } from "react";
+import { StyledSpaceBetween } from "../column/style";
 import { api } from '../../../../../../../services/api';
+import { StyledForm, StyledNameInput } from "../../../style";
+import { StyledCard, StyledCardName, StyledDate, StyledEmoji, StyledImg, StyledUsers } from "./style";
 import { StyledModalBackground } from '../../../../../../../components/modal/style';
-import CardModal from './modal';
 
 interface ICardProps {
     card: ICard;
@@ -122,11 +124,11 @@ const Card = ({ card }: ICardProps) => {
                 </StyledSpaceBetween>
                 {
                     currentCard.description &&
-                    <StyledCardDescription>
-                        {currentCard.description}
-                    </StyledCardDescription>
+                    <StyledSection style={{ padding: "3px", borderRadius: "1px" }}>
+                        <StyledMarkdown description={currentCard.description} customClass='small' />
+                    </StyledSection>
                 }
-                <StyledSpaceBetween style={{ alignItems: "flex-end" }}>
+                <StyledSpaceBetween style={{ alignItems: "flex-end" }} >
                     <StyledUsers>
                         <StyledImg src="/User.png" />
                         <StyledImg src="/User.png" />

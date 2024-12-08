@@ -14,13 +14,16 @@ import { api } from "../../../../../../../../services/api";
 import { StyledCardName, StyledDate, StyledEmoji, StyledImg, StyledUsers } from "../style";
 import { StyledCardButton, StyledDescription, StyledGrid, StyledInput, StyledTitle } from "./style";
 
+import StyledMarkdown from "../markdown";
+
 interface ICardModalProps {
     card: ICard;
 }
 
 interface IUpdateCard {
     name?: string;
-    description?: string
+    description?: string;
+    status?: boolean;
 }
 
 const CardModal = ({ card }: ICardModalProps) => {
@@ -53,7 +56,8 @@ const CardModal = ({ card }: ICardModalProps) => {
         const response = await api.patch(`/cards/${currentCard.id}`,
             {
                 name: props.name,
-                description: props.description
+                description: props.description,
+                status: props.status
             },
             {
                 headers: {
@@ -62,11 +66,14 @@ const CardModal = ({ card }: ICardModalProps) => {
             });
 
         const newCard = response.data.card;
-        setCurrentCard({ ...currentCard, name: newCard.name, description: newCard.description })
+        setCurrentCard({ ...currentCard, name: newCard.name, description: newCard.description, status: newCard.status })
     }
 
     const editCard = async (e: React.FormEvent, props: IUpdateCard) => {
         e.preventDefault();
+
+        if (props.name === currentCard.name || props.description === currentCard.description || props.status === currentCard.status)
+            return;
 
         toast.promise(
             apiRequest(props).catch(error => {
@@ -75,36 +82,6 @@ const CardModal = ({ card }: ICardModalProps) => {
             {
                 loading: "Updating card...",
                 success: "Card updated successfully!",
-                error: (err) => err,
-            }
-        )
-    }
-
-    const apiRequestStatus = async () => {
-        const response = await api.patch(`/cards/${currentCard.id}`,
-            {
-                status: !currentCard.status
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("Token")}`,
-                },
-            });
-
-        const newCard = response.data.card;
-        setCurrentCard({ ...currentCard, status: newCard.status });
-    }
-
-    const toggleStatus = async (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
-        e.stopPropagation();
-
-        toast.promise(
-            apiRequestStatus().catch(error => {
-                throw error.response?.data?.message || error.message;
-            }),
-            {
-                loading: "Toggling card status...",
-                success: !currentCard.status ? "Finished card!" : "Unfinished card!",
                 error: (err) => err,
             }
         )
@@ -133,7 +110,7 @@ const CardModal = ({ card }: ICardModalProps) => {
                     </IconButton>
                 </StyledSpaceBetween>
                 <StyledDate style={{ alignSelf: "flex-start" }}>
-                    <StyledEmoji style={{ margin: "0" }} onClick={toggleStatus}>{currentCard?.status === false ? "🔴" : "🟢"}</StyledEmoji>
+                    <StyledEmoji style={{ margin: "0" }} onClick={(e) => editCard(e, { status: !currentCard.status })}>{currentCard?.status === false ? "🔴" : "🟢"}</StyledEmoji>
                     {currentCard?.dueDate ? new Date(currentCard.dueDate).toLocaleDateString() : 'No due date'}
                 </StyledDate>
                 {
@@ -150,23 +127,23 @@ const CardModal = ({ card }: ICardModalProps) => {
                 {
                     currentCard.description && !editingDescription &&
                     <Section title="Description" button={{ label: "Edit", action: () => { setEditingDescription(true) } }}>
-                        <StyledDescription>
-                            {currentCard.description}
-                        </StyledDescription>
+                        <StyledMarkdown description={currentCard.description} />
                     </Section>
                 }
                 {
                     editingDescription &&
-                    <Section title="Description" button={{ label: "Save", action: (e: React.FormEvent) => {
-                        editCard(e, { description: editingDescriptionContent});
-                        setEditingDescription(false);
-                    }}}>
+                    <Section title="Description" button={{
+                        label: "Save", action: (e: React.FormEvent) => {
+                            editCard(e, { description: editingDescriptionContent });
+                            setEditingDescription(false);
+                        }
+                    }}>
                         <DescriptionEditor description={currentCard.description} value={editingDescriptionContent} setValue={setEditingDescriptionContent} />
                     </Section>
                 }
                 <Grid container spacing={2} justifyContent="left" style={{ width: "100%" }}>
                     <StyledGrid item xs={6} sm={4} md={3} lg={2}>
-                        <StyledCardButton onClick={() => setEditingDescription(true)}>Add Description</StyledCardButton>
+                        <StyledCardButton disabled={currentCard.description != undefined} onClick={() => setEditingDescription(true)}>Add Description</StyledCardButton>
                     </StyledGrid>
                     <StyledGrid item xs={6} sm={4} md={3} lg={2}>
                         <StyledCardButton>Add Assignees</StyledCardButton>

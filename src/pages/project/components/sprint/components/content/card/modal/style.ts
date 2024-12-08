@@ -3,6 +3,8 @@ import chroma from "chroma-js";
 import EColorPalette from "../../../../../../../../enums/EColorPalette";
 import { Grid } from "@mui/material";
 
+import ReactMarkdown from 'react-markdown';
+
 export const StyledTitle = styled.span`
     font-size: 17px !important;
     font-weight: 700;
@@ -75,20 +77,24 @@ export const StyledButton = styled.button`
     }
 `
 
-export const StyledDescription = styled.span`
+export const StyledDescription = styled(ReactMarkdown)`
     width: 100%;
     white-space: normal;
 
     text-align: justify;
 
     font-size: 14px;
+
+    & * {
+        margin-bottom: 10px;
+    }
 `
 
-export const StyledCardButton = styled.button`
+export const StyledCardButton = styled.button<{ disabled?: boolean }>`
     width: 100%;
 
     color: ${EColorPalette.MINTCREAM};
-    background-color: ${EColorPalette.JET};
+    background-color: ${(props) => props.disabled ? "#858585" : EColorPalette.JET};
 
     border: none;
     border-radius: 3px;
@@ -102,7 +108,7 @@ export const StyledCardButton = styled.button`
     font-weight: 500;
 
     &:hover {
-        background-color: ${chroma(EColorPalette.JET).darken(1).hex()};
+        background-color: ${(props) => props.disabled ? "#858585" : chroma(EColorPalette.JET).darken(1).hex()};
     }
 `
 

@@ -23,6 +23,8 @@ export const StyledCard = styled(Paper)`
 
         border: 3px solid ${EColorPalette.MINTCREAM};
         transition: 300ms;
+
+        user-select: none;
     }
 
     &:hover {

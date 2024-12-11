@@ -23,6 +23,7 @@ export const StyledSprint = styled.main`
         background-color: ${EColorPalette.JET};
 
         height: 13px;
+        cursor: default;
     }
 
     &::-webkit-scrollbar-thumb {
@@ -30,6 +31,7 @@ export const StyledSprint = styled.main`
         border-radius: 15px;
 
         border: solid ${EColorPalette.JET} 3px;
+        cursor: pointer;
     }
 `
 

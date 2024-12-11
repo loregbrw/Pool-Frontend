@@ -42,6 +42,7 @@ export const StyledContent = styled.div`
         width: 8px;
 
         border-radius: 10px;
+        cursor: default;
     }
 
     &::-webkit-scrollbar-thumb {
@@ -49,6 +50,7 @@ export const StyledContent = styled.div`
         border-radius: 15px;
 
         border: solid ${EColorPalette.JET} 2px;
+        cursor: pointer;
     }
 `
 

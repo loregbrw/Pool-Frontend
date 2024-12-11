@@ -12,6 +12,7 @@ import { StyledButton } from "../../../../../../../components/style";
 import EColorPalette from "../../../../../../../enums/EColorPalette";
 import Card from "../card";
 import StyledTooltip from "../../../../../../../components/tooltip";
+import { Draggable, Droppable } from "react-beautiful-dnd";
 
 interface IColumnProps {
     column: IColumn
@@ -124,19 +125,41 @@ const Column = ({ column }: IColumnProps) => {
                     </IconButton>
                 </StyledSpaceBetween>
                 <StyledButton bgcolor={EColorPalette.JET} onClick={() => addCard(currentColumn.id, currentColumn.cards.length)}>Add new card +</StyledButton>
-                {
-                    currentColumn.cards.length > 0 &&
+
                     <StyledContent>
                         <StyledSections>
-                            {
-                                column.cards.sort((a, b) => a.index - b.index).map((card, index) => (
-                                    <Card key={index} card={card} />
-                                ))
-                            }
+                            <Droppable droppableId={currentColumn.id} type="CARD">
+                                {(provided) => (
+                                    <div
+                                        ref={provided.innerRef}
+                                        {...provided.droppableProps}
+                                        style={{
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            gap: "7px",
 
+                                            minHeight: "1px"
+                                        }}
+                                    >
+                                        {currentColumn.cards?.map((card, index) => (
+                                            <Draggable key={card.id} draggableId={card.id} index={index}>
+                                                {(provided) => (
+                                                    <div
+                                                        ref={provided.innerRef}
+                                                        {...provided.draggableProps}
+                                                        {...provided.dragHandleProps}
+                                                    >
+                                                        <Card card={card} />
+                                                    </div>
+                                                )}
+                                            </Draggable>
+                                        ))}
+                                        {provided.placeholder}
+                                    </div>
+                                )}
+                            </Droppable>
                         </StyledSections>
                     </StyledContent>
-                }
             </StyledColumn>
         </>
     )

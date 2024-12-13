@@ -9,7 +9,6 @@ import { IconButton } from "@mui/material";
 import { useEffect, useState } from "react";
 import { api } from "../../../../services/api";
 import { StyledButton } from "../../../../components/style";
-import { StyledModalBackground } from "../../../../components/modal/style";
 import { StyledContainer, StyledDiv, StyledHeader, StyledImg, StyledOption, StyledSearch, StyledSelect } from "./style";
 
 export interface ITag {
@@ -66,10 +65,7 @@ const HeaderHome = ({ search, setSearch, selectedTag, setSelectedTag, projectMod
                         <StyledButton bgcolor={EColorPalette.COOLGRAY} onClick={() => { setTagModal(true) }}>New Tag +</StyledButton>
                         {
                             tagModal &&
-                            <>
-                                <TagModal closeAction={() => setTagModal(false)} />
-                                <StyledModalBackground onClick={() => setTagModal(false)} />
-                            </>
+                            <TagModal onClose={() => setTagModal(false)} />
                         }
                     </StyledDiv>
                     <StyledButton bgcolor={EColorPalette.ENGINEERINGORANGE} onClick={() => setProjectModal(true)}>New Project +</StyledButton>
@@ -99,10 +95,7 @@ const HeaderHome = ({ search, setSearch, selectedTag, setSelectedTag, projectMod
             </StyledHeader >
             {
                 projectModal &&
-                <>
-                    <CreateProjectModal closeAction={() => setProjectModal(false)} />
-                    <StyledModalBackground />
-                </>
+                <CreateProjectModal onClose={() => setProjectModal(false)} />
             }
         </>
     )

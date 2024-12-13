@@ -34,14 +34,18 @@ const router = createBrowserRouter([
     element:
       <App>
         <Home />
-      </App> 
+      </App>
   },
   {
     path: "/project/:id",
     element:
       <App>
         <Project />
-      </App>
+      </App>,
+    children: [{
+      path: "sprint/:sprintId",
+      children: [{ path: "card/:cardId" }]
+    }]
   }
 
 ]);

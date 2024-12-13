@@ -1,4 +1,3 @@
-import CardModal from './modal';
 import toast from 'react-hot-toast';
 import StyledMarkdown from './markdown';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -10,8 +9,8 @@ import { useEffect, useRef, useState } from "react";
 import { StyledSpaceBetween } from "../column/style";
 import { api } from '../../../../../../../services/api';
 import { StyledForm, StyledNameInput } from "../../../style";
-import { StyledCard, StyledCardName, StyledDate, StyledEmoji, StyledImg, StyledUsers } from "./style";
-import { StyledModalBackground } from '../../../../../../../components/modal/style';
+import { StyledCard, StyledCardName, StyledDate, StyledEmoji, StyledUsers } from "./style";
+import { useNavigate, useParams } from 'react-router-dom';
 
 interface ICardProps {
     card: ICard;
@@ -19,6 +18,7 @@ interface ICardProps {
 
 const Card = ({ card }: ICardProps) => {
 
+    const { sprintId } = useParams();
     const inputRef = useRef<HTMLInputElement>(null);
 
     const [currentCard, setCurrentCard] = useState(card);
@@ -26,7 +26,7 @@ const Card = ({ card }: ICardProps) => {
     const [editingName, setEditingName] = useState("");
     const [editingNameCard, setEditingNameCard] = useState(false);
 
-    const [openCard, setOpenCard] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         setCurrentCard(card);
@@ -106,7 +106,7 @@ const Card = ({ card }: ICardProps) => {
 
     return (
         <>
-            <StyledCard onClick={() => setOpenCard(true)}>
+            <StyledCard onClick={() => navigate(`sprint/${sprintId}/card/${card.id}`)}>
                 <StyledSpaceBetween>
                     {
                         !editingNameCard &&
@@ -130,10 +130,10 @@ const Card = ({ card }: ICardProps) => {
                 }
                 <StyledSpaceBetween style={{ alignItems: "flex-end" }} >
                     <StyledUsers>
+                        {/* <StyledImg src="/User.png" />
                         <StyledImg src="/User.png" />
                         <StyledImg src="/User.png" />
-                        <StyledImg src="/User.png" />
-                        <StyledCardName>+</StyledCardName>
+                        <StyledCardName>+</StyledCardName> */}
                     </StyledUsers>
                     <StyledDate>
                         {currentCard?.dueDate ? new Date(currentCard.dueDate).toLocaleDateString() : ''}
@@ -141,13 +141,6 @@ const Card = ({ card }: ICardProps) => {
                     </StyledDate>
                 </StyledSpaceBetween>
             </StyledCard>
-            {
-                openCard &&
-                <>
-                    <CardModal card={currentCard} />
-                    <StyledModalBackground onClick={() => setOpenCard(false)} />
-                </>
-            }
         </>
     )
 }

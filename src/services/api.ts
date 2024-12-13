@@ -8,4 +8,4 @@ export const api = axios.create({
     timeout: 500000
 })
 
-export const socket = io(baseURL);
+// export const socket = io(baseURL);

@@ -35,6 +35,7 @@ export const StyledContent = styled.div`
     width: 100%;
 
     overflow-y: auto;
+    overflow-x: hidden;
     white-space: nowrap;
 
     &::-webkit-scrollbar {

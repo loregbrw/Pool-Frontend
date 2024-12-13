@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import Loading from "../../components/loading";
 import { StyledMain } from "../../components/style";
 import Sprint from "./components/sprint";
+import CardModal from "./components/sprint/components/content/card/modal";
 
 export interface ICard {
     id: string;
@@ -47,12 +48,12 @@ export interface IProject {
 
 const Project = () => {
 
-    const { id } = useParams<{ id: string }>();
+    const { id, sprintId, cardId } = useParams();
 
     const [loading, setLoading] = useState(true);
     const [project, setProject] = useState<IProject>();
 
-    const [currentSprint, setCurrentSprint] = useState<ISprint>();
+    const [currentSprint, setCurrentSprint] = useState(0);
 
     const navigate = useNavigate();
 
@@ -66,8 +67,6 @@ const Project = () => {
             
             const projectData: IProject = response.data;
             setProject(projectData);
-
-            console.log(response.data)
 
             const projectSprints = projectData.project.sprints;
 
@@ -83,7 +82,7 @@ const Project = () => {
             if (!sprint)
                 sprint = projectSprints[projectSprints.length - 1];
 
-            setCurrentSprint(sprint);
+            navigate(`sprint/${sprint.id}`);
 
         } catch (error: any) {
             navigate("/home");
@@ -110,8 +109,12 @@ const Project = () => {
     return (
         <>
             <StyledProject>
-                <Sprint sprint={currentSprint} />
+                <Sprint />
             </StyledProject>
+            {
+                cardId &&
+                <CardModal cardId={cardId} onClose={() => navigate(`sprint/${sprintId}`)} />
+            }
         </>
     )
 }

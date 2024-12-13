@@ -2,7 +2,7 @@ import CodeIcon from '@mui/icons-material/Code';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { CommandHandler, TextareaMarkdownRef } from 'textarea-markdown-editor';
 import { HoverButton, StyledButton, StyledButtonRight, StyledButtonRightB, StyledButtons, StyledContainer, StyledTextArea, TextareaContainer } from './style';
 
@@ -19,6 +19,10 @@ const emojiCommandHandler: CommandHandler = ({ cursor }) => {
 const DescriptionEditor = ({ description, value, setValue }: IDescriptionProps) => {
 
     const ref = useRef<TextareaMarkdownRef>(null);
+
+    useEffect(() => {
+        setValue(description || "")
+    }, [description])
 
     return (
         <StyledContainer>

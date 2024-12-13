@@ -1,40 +1,89 @@
 import toast from 'react-hot-toast';
+import Column from './components/content/column';
+import Loading from '../../../../components/loading';
+import HeaderSprint from './components/header-sprint';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
-import { ICard, IColumn, ISprint } from "../..";
+import { IColumn, ISprint } from "../..";
 import { IconButton } from "@mui/material";
 import { api } from '../../../../services/api';
 import { useEffect, useRef, useState } from "react";
 import { StyledDescription, StyledName } from "../style";
 import { StyledFooter, StyledForm, StyledNameInput, StyledSprint, StyledSprintName } from "./style";
-import HeaderSprint from './components/header-sprint';
 import { StyledContent } from './components/content/style';
-import Column from './components/content/column';
-import Loading from '../../../../components/loading';
 import { StyledAdd, StyledAddSpan } from './components/content/card/style';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import { useParams } from 'react-router-dom';
 
-interface ISprintProps {
-    sprint: ISprint | undefined;
-}
+const Sprint = () => {
 
-const Sprint = ({ sprint }: ISprintProps) => {
-
-    if (!sprint) {
-        return null;
-    }
-
-    const [currentSprint, setCurrentSprint] = useState<ISprint>(sprint);
-
+    const { sprintId } = useParams();
     const inputRef = useRef<HTMLInputElement>(null);
+
+    const [currentSprint, setCurrentSprint] = useState<ISprint>();
     const [editingNameSprint, setEditingNameSprint] = useState(false);
 
-    const [progress, setProgress] = useState(0);
     const [inputWidth, setInputWidth] = useState("");
     const [editingName, setEditingName] = useState("");
 
+    const [progress, setProgress] = useState<{ totalCards: number, completedCards: number }>({
+        totalCards: 0, completedCards: 0
+    });
     const [loading, setLoading] = useState(true);
+
+    const getData = async () => {
+
+        if (!sprintId) return;
+
+        try {
+            const response = await api.get(`/sprints/${sprintId}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("Token")}`,
+                    },
+                }
+            );
+
+            setCurrentSprint(response.data.sprint);
+            setLoading(false);
+
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        getData();
+    }, [sprintId])
+
+
+    useEffect(() => {
+        if (editingNameSprint && inputRef.current)
+            inputRef.current.focus();
+
+    }, [editingNameSprint]);
+
+    if (loading || !currentSprint || !sprintId) {
+
+        return (
+            <>
+                <StyledSprint>
+                    <Loading />
+                </StyledSprint>
+                <StyledFooter />
+            </>
+        )
+    }
+
+    const openEditName = () => {
+        setEditingName(currentSprint.name);
+        setEditingNameSprint(true);
+
+        calculateWidth(currentSprint.name);
+    }
 
     const calculateWidth = (s: string) => {
         const spaces = s.split(" ").length - 1;
@@ -50,33 +99,8 @@ const Sprint = ({ sprint }: ISprintProps) => {
         calculateWidth(e.target.value);
     }
 
-    const openEditName = () => {
-        setEditingName(currentSprint.name);
-        setEditingNameSprint(true);
-
-        calculateWidth(currentSprint.name);
-    }
-
-    const getData = async () => {
-        try {
-            const response = await api.get(`/columns/sprint/${sprint.id}`, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("Token")}`,
-                },
-            });
-
-            setCurrentSprint({ ...currentSprint, columns: response.data.columns });
-            setProgress(response.data.progress / 100)
-
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setLoading(false);
-        }
-    }
-
     const apiRequest = async () => {
-        const response = await api.patch(`/sprints/${sprint?.id}`,
+        const response = await api.patch(`/sprints/${sprintId}`,
             {
                 name: editingName
             },
@@ -84,7 +108,8 @@ const Sprint = ({ sprint }: ISprintProps) => {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("Token")}`,
                 },
-            });
+            }
+        );
 
         const newSprint = response.data.sprint;
         setCurrentSprint({ ...currentSprint, name: newSprint.name });
@@ -117,7 +142,8 @@ const Sprint = ({ sprint }: ISprintProps) => {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("Token")}`,
                 },
-            });
+            }
+        );
 
         const newColumn: IColumn = response.data.column;
         setCurrentSprint({ ...currentSprint!, columns: [...currentSprint?.columns!, { ...newColumn, cards: [] }] });
@@ -137,18 +163,20 @@ const Sprint = ({ sprint }: ISprintProps) => {
     }
 
     const processColumnUpdate = async (newColumns: IColumn[]) => {
-        await api.patch(`/sprints/reorder/${currentSprint.id}`, {
-            columns: newColumns.map((col) => (col.id)),
-        }, {
+        await api.patch(`/sprints/reorder/${currentSprint.id}`,
+            {
+                columns: newColumns.map((col) => (col.id)),
+            }, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("Token")}`,
             },
-        });
+        }
+        );
     };
 
     const handleColumnReorder = async (newColumns: IColumn[]) => {
         setCurrentSprint((prevSprint) => {
-            const updatedSprint = { ...prevSprint, columns: newColumns };
+            const updatedSprint = { ...prevSprint!, columns: newColumns };
             toast.promise(
                 processColumnUpdate(newColumns).catch(error => {
                     getData();
@@ -176,11 +204,12 @@ const Sprint = ({ sprint }: ISprintProps) => {
                 },
             }
         );
-    };
+    }
 
     const handleCardReorder = async (cardId: string, destColumnId: string, destIndex: number, newColumns: IColumn[]) => {
         setCurrentSprint((prevSprint) => {
-            const updatedSprint = { ...prevSprint, columns: newColumns };
+
+            const updatedSprint = { ...prevSprint!, columns: newColumns };
             toast.promise(
                 processCardUpdate(cardId, destColumnId, destIndex).catch(error => {
                     getData();
@@ -194,27 +223,6 @@ const Sprint = ({ sprint }: ISprintProps) => {
             )
             return updatedSprint;
         });
-    };
-
-    useEffect(() => {
-        if (editingNameSprint && inputRef.current)
-            inputRef.current.focus();
-
-    }, [editingNameSprint]);
-
-    useEffect(() => {
-        getData();
-    }, [])
-
-    if (loading) {
-        return (
-            <>
-                <StyledSprint>
-                    <Loading />
-                </StyledSprint>
-                <StyledFooter />
-            </>
-        )
     }
 
     return (
@@ -227,7 +235,7 @@ const Sprint = ({ sprint }: ISprintProps) => {
                             1
                         )
                     }
-                    tasksProgress={progress}
+                    tasksProgress={progress.totalCards > 0 ? (progress.completedCards / progress.totalCards) * 100 : 0}
                 />
                 <StyledContent>
                     <DragDropContext
@@ -258,7 +266,7 @@ const Sprint = ({ sprint }: ISprintProps) => {
                                     newCards.forEach((card, index) => (card.index = index));
 
                                     sourceColumn.cards = newCards;
-                                    
+
                                 } else {
 
                                     sourceColumn.cards = sourceColumn.cards || [];
@@ -350,12 +358,12 @@ const Sprint = ({ sprint }: ISprintProps) => {
                         {
                             (() => {
 
-                                const day = Math.floor(Math.abs(new Date().getTime() - new Date(sprint.initialDate).getTime()) / (1000 * 60 * 60 * 24)) + 1;
+                                const day = Math.floor(Math.abs(new Date().getTime() - new Date(currentSprint.initialDate).getTime()) / (1000 * 60 * 60 * 24)) + 1;
                                 if (day > currentSprint.duration)
                                     return "Sprint completed"
 
                                 const suffix = day === 1 ? "st" : day === 2 ? "nd" : day === 3 ? "rd" : "th";
-                                return `${day}${suffix} day of ${sprint.duration} day${sprint.duration > 1 ? "s" : ""}`;
+                                return `${day}${suffix} day of ${currentSprint.duration} day${currentSprint.duration > 1 ? "s" : ""}`;
                             })()
                         }
                     </StyledDescription>
@@ -364,6 +372,8 @@ const Sprint = ({ sprint }: ISprintProps) => {
                     <KeyboardArrowRightIcon />
                 </IconButton>
             </StyledFooter>
+
+
         </>
     )
 }

@@ -4,22 +4,27 @@ import EColorPalette from "../../enums/EColorPalette";
 import { Paper } from "@mui/material";
 
 export const StyledModalBackground = styled.div`
+    box-sizing: border-box;
     height: 100vh;
     width: 100%;
 
     top: 0;
     left: 0;
 
-    z-index: 999;
+    z-index: 9999;
     position: fixed;
 
     background-color: ${EColorPalette.JET};
     filter: opacity(25%);
+
+    &:not(.overlay) {
+        pointer-events: none;
+    }
 `
 
 export const StyledModal = styled(Paper)`
 
-    z-index: 1000;
+    z-index: 10000;
     position: absolute;
 
     padding: 15px;
@@ -54,6 +59,16 @@ export const StyledModal = styled(Paper)`
     }
 `
 
+export const StyledSec = styled.div`
+    display: flex;
+    flex-direction: column;
+
+    gap: 15px;
+    padding: 10px;
+    width: 100%;
+    background-color: ${EColorPalette.MINTCREAM};
+`
+
 export const StyledForm = styled.form`
     display: flex;
     flex-direction: column;
@@ -84,7 +99,7 @@ export const StyledInput = styled.input<{ error?: boolean }>`
 
     color: ${(props) => props.error ? EColorPalette.ENGINEERINGORANGE : EColorPalette.JET};
 
-    border: ${(props) => props.error ? `solid 2px ${EColorPalette.ENGINEERINGORANGE}` : "none" };
+    border: ${(props) => props.error ? `solid 2px ${EColorPalette.ENGINEERINGORANGE}` : "none"};
 `
 
 export const StyledLabel = styled.span`

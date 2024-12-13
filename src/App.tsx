@@ -62,14 +62,16 @@ export const App = ({ children }: { children: React.ReactNode }) => {
                 profileModal &&
                 <>
                   <OptionsModal options={[
-                    { label: "My profile", action: () => {} },
-                    { label: "Log out", action: () => {
-                      localStorage.removeItem("Token");
-                      navigate("/");
-                    }}
+                    { label: "My profile", action: () => { } },
+                    {
+                      label: "Log out", action: () => {
+                        localStorage.removeItem("Token");
+                        navigate("/");
+                      }
+                    }
                   ]}
-                  align="right" />
-                  <StyledModalBackground onClick={() => setProfileModal(false)} />
+                    align="right"
+                    onClose={() => setProfileModal(false)} />
                 </>
               }
             </StyledProfile>

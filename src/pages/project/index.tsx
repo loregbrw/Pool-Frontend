@@ -6,7 +6,6 @@ import toast from "react-hot-toast";
 import Loading from "../../components/loading";
 import { StyledMain } from "../../components/style";
 import Sprint from "./components/sprint";
-import CardModal from "./components/sprint/components/content/card/modal";
 
 export interface ICard {
     id: string;
@@ -51,9 +50,7 @@ const Project = () => {
     const { id, sprintId, cardId } = useParams();
 
     const [loading, setLoading] = useState(true);
-    const [project, setProject] = useState<IProject>();
-
-    const [currentSprint, setCurrentSprint] = useState(0);
+    const [currentProject, setCurrentProject] = useState<IProject>();
 
     const navigate = useNavigate();
 
@@ -66,7 +63,7 @@ const Project = () => {
             });
             
             const projectData: IProject = response.data;
-            setProject(projectData);
+            setCurrentProject(projectData);
 
             const projectSprints = projectData.project.sprints;
 
@@ -98,7 +95,7 @@ const Project = () => {
         getProject();
     }, []);
 
-    if (loading) {
+    if (loading || !currentProject) {
         return (
             <StyledMain>
                 <Loading />
@@ -109,12 +106,8 @@ const Project = () => {
     return (
         <>
             <StyledProject>
-                <Sprint />
+                <Sprint projectSprints={currentProject.project.sprints} />
             </StyledProject>
-            {
-                cardId &&
-                <CardModal cardId={cardId} onClose={() => navigate(`sprint/${sprintId}`)} />
-            }
         </>
     )
 }

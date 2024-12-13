@@ -33,6 +33,10 @@ const Column = ({ column }: IColumnProps) => {
 
     }, [editingNameColumn]);
 
+    useEffect(() => {
+        setCurrentColumn(column);
+    }, [column])
+
     const openEditName = () => {
         setEditingName(column.name);
         setEditingNameColumn(true);

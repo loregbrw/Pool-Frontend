@@ -14,11 +14,16 @@ import { StyledFooter, StyledForm, StyledNameInput, StyledSprint, StyledSprintNa
 import { StyledContent } from './components/content/style';
 import { StyledAdd, StyledAddSpan } from './components/content/card/style';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import CardModal from './components/content/card/modal';
 
-const Sprint = () => {
+interface ISprintProps {
+    projectSprints: ISprint[];
+}
 
-    const { sprintId } = useParams();
+const Sprint = ({ projectSprints }: ISprintProps) => {
+
+    const { sprintId, cardId } = useParams();
     const inputRef = useRef<HTMLInputElement>(null);
 
     const [currentSprint, setCurrentSprint] = useState<ISprint>();
@@ -30,7 +35,24 @@ const Sprint = () => {
     const [progress, setProgress] = useState<{ totalCards: number, completedCards: number }>({
         totalCards: 0, completedCards: 0
     });
+
     const [loading, setLoading] = useState(true);
+
+    const [itSprint, setItSprint] = useState<{
+        hasPreviousSprint: boolean, hasNextSprint: boolean, currentIndex: number
+    }>({ hasPreviousSprint: false, hasNextSprint: false, currentIndex: 0 });
+
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!currentSprint || !projectSprints) return;
+
+        const currentIndex = projectSprints.findIndex(sprint => sprint.id === sprintId);
+        setItSprint({ ...itSprint, hasPreviousSprint: currentIndex > 0, hasNextSprint: currentIndex < projectSprints.length - 1 });
+
+    }, [currentSprint, projectSprints]);
+
 
     const getData = async () => {
 
@@ -340,7 +362,7 @@ const Sprint = () => {
                 </StyledContent>
             </StyledSprint>
             <StyledFooter>
-                <IconButton size="small" >
+                <IconButton size="small" disabled={itSprint.hasPreviousSprint} >
                     <KeyboardArrowLeftIcon />
                 </IconButton>
                 <StyledSprintName>
@@ -372,8 +394,10 @@ const Sprint = () => {
                     <KeyboardArrowRightIcon />
                 </IconButton>
             </StyledFooter>
-
-
+            {
+                cardId &&
+                <CardModal cardId={cardId} onClose={() => navigate(`sprint/${sprintId}`)} sprint={currentSprint} updateSprint={setCurrentSprint} />
+            }
         </>
     )
 }

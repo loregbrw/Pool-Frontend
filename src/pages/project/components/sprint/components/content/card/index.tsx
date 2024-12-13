@@ -55,7 +55,7 @@ const Card = ({ card }: ICardProps) => {
             });
 
         const newCard = response.data.card;
-        setCurrentCard({ ...currentCard, name: newCard.name })
+        setCurrentCard({ ...currentCard, name: newCard.name });
     }
 
     const editCardName = async (e: React.FormEvent) => {

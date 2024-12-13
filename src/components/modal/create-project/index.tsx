@@ -127,7 +127,7 @@ const CreateProjectModal = ({ onClose: closeAction }: ICreateProjectModalProps) 
 
     return (
         <Box onClick={closeAction} sx={{ cursor: "default", position: "fixed", width: "100%", height: "100%", backgroundColor: "rgba(51, 49, 56, 0.25)", display: "flex", alignItems: "center", justifyContent: "center", top: 0, left: 0, zIndex: 9999 }}>
-            <StyledModal elevation={3} style={{ width: "calc(100% - 40px)", maxWidth: "700px" }} >
+            <StyledModal onClick={(e) => e.stopPropagation()} elevation={3} style={{ width: "calc(100% - 40px)", maxWidth: "700px" }} >
                 <StyledForm onSubmit={createProject}>
                     <StyledTitle>New project</StyledTitle>
                     <StyledDiv>

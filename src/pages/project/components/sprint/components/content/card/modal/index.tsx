@@ -4,7 +4,7 @@ import DescriptionEditor from "./description-editor";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EColorPalette from "../../../../../../../../enums/EColorPalette";
 
-import { ICard } from "../../../../../..";
+import { ICard, IProject, ISprint } from "../../../../../..";
 import { Box, Grid, IconButton } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { StyledSpaceBetween } from "../../column/style";
@@ -15,10 +15,13 @@ import { StyledCardName, StyledDate, StyledEmoji, StyledImg, StyledUsers } from 
 import { StyledCardButton, StyledGrid, StyledInput, StyledTitle } from "./style";
 
 import StyledMarkdown from "../markdown";
+import { useParams } from "react-router-dom";
 
 interface ICardModalProps {
     cardId: string;
-    onClose: () => void
+    onClose: () => void;
+    sprint: ISprint;
+    updateSprint: (e: ISprint) => void;
 }
 
 interface IUpdateCard {
@@ -27,9 +30,10 @@ interface IUpdateCard {
     status?: boolean;
 }
 
-const CardModal = ({ cardId, onClose }: ICardModalProps) => {
+const CardModal = ({ cardId, onClose, sprint, updateSprint }: ICardModalProps) => {
 
     const inputRef = useRef<HTMLInputElement>(null);
+    const { sprintId } = useParams();
 
     const [currentCard, setCurrentCard] = useState<ICard>();
 
@@ -97,7 +101,20 @@ const CardModal = ({ cardId, onClose }: ICardModalProps) => {
             });
 
         const newCard = response.data.card;
-        setCurrentCard({ ...currentCard, name: newCard.name, description: newCard.description, status: newCard.status })
+        const updatedCard = { ...currentCard, name: newCard.name, description: newCard.description, status: newCard.status };
+
+        const updatedSprint = {
+            ...sprint,
+            columns: sprint.columns?.map(column => ({
+                ...column,
+                cards: column.cards.map(card =>
+                    card.id === cardId ? updatedCard : card
+                ),
+            })),
+        }
+
+        updateSprint(updatedSprint);
+        setCurrentCard(updatedCard);
     }
 
     const editCard = async (e: React.FormEvent, props: IUpdateCard) => {
